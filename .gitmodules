@@ -1,3 +1,1 @@
-[submodule "rpi/whisper-rs/sys/whisper-rs"]
-	path = rpi/whisper-rs/sys/whisper-rs
-	url = https://github.com/ggerganov/whisper.cpp
+
