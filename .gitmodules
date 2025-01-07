@@ -1,1 +1,4 @@
 
+[submodule "rpi/whisper-rs"]
+	path = rpi/whisper-rs
+	url = https://github.com/tazz4843/whisper-rs.git
