@@ -1,0 +1,10 @@
+type: library
+
+project:
+  name: models
+  description: GGML Models
+
+tasks:
+  download:
+    description: Download the ggml-base.bin model from Hugging Face
+    command: "./download.sh"
