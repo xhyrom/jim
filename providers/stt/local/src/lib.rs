@@ -1,4 +1,8 @@
-use std::{io::Cursor, sync::Arc};
+use std::{
+    io::Cursor,
+    ops::{Deref, DerefMut},
+    sync::Arc,
+};
 
 use anyhow::Result;
 use async_trait::async_trait;
