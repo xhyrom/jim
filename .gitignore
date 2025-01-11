@@ -1,4 +1,5 @@
 target/
+*.wav
 
 # moon
 .moon/cache
