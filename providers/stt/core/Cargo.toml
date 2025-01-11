@@ -1,0 +1,10 @@
+[package]
+name = "stt-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-trait = "0.1"
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "2.0.11"

@@ -1,0 +1,16 @@
+[package]
+name = "voice-assistant"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = ["stt-local"]
+
+# STT features
+stt-local = ["stt/local"]
+stt-cloudflare = ["stt/cloudflare"]
+
+[dependencies]
+stt = { path = "../providers/stt" }
+tokio.workspace = true
+anyhow.workspace = true

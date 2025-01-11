@@ -1,0 +1,24 @@
+[workspace]
+members = ["providers/stt", "assistant"]
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+tokio = { version = "1.36", features = ["full"] }
+anyhow = "1.0"
+tracing = "0.1"
+async-trait = "0.1"

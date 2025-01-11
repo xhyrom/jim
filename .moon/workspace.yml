@@ -4,5 +4,5 @@ $schema: "https://moonrepo.dev/schemas/workspace.json"
 projects:
   - "app"
   - "models"
-  - "rpi"
-  - "worker"
+  - "assistant"
+  - "providers"
