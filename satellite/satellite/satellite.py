@@ -2,9 +2,10 @@ from enum import Enum, auto
 from pathlib import Path
 
 from .wake import WakeService
+from .whisper import WhisperService
 
 _DIR = Path(__file__).parent
-_MODELS_DIR = _DIR / ".." / ".." / "models" / "satellite"
+_MODELS_DIR = _DIR / ".." / ".." / "models"
 
 
 class State(Enum):
@@ -23,12 +24,19 @@ class Satellite:
         self.state = State.OFF
 
         self.wake_service = WakeService(
-            [_MODELS_DIR / "hey_jarvis.tflite"],
+            [_MODELS_DIR / "openwakeword" / "hey_jarvis.tflite"],
             0.5,
         )
+        self.whisper_service = WhisperService("base")
 
     async def run(self) -> None:
         self.state = State.IDLE
 
         while True:
-            print(self.wake_service.run())
+            if self.wake_service.run():
+                self.state = State.LISTENING
+
+                print("Listening...")
+                self.whisper_service.run()
+
+                self.state = State.IDLE

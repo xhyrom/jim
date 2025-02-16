@@ -32,12 +32,15 @@ class WakeService:
             frame = np.frombuffer(self.stream.read(self.chunk), dtype=np.int16)
             yield frame
 
-    def run(self):
+    def run(self) -> bool:
+        self.model.reset()
+
         for frame in self.get_audio_frame():
             predictions: dict[str, float] = self.model.predict(frame)  # type: ignore
 
             for model_name, prediction in predictions.items():
                 if prediction > self.threshold:
-                    return f"{model_name} {prediction}"
+                    print(f"{model_name} {prediction}")
+                    return True
 
-        return None
+        return False
