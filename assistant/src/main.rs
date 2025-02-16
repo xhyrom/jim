@@ -16,7 +16,11 @@ async fn main() {
     });
 
     let wav = std::fs::read(wav_path).expect("Failed to read wav file");
+
+    let t1 = std::time::Instant::now();
     let text = provider.transcribe(wav).await.unwrap();
+    let t2 = std::time::Instant::now();
 
     println!("{}", text);
+    println!("Time: {:?}s", t2 - t1);
 }

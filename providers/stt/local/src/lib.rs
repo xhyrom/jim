@@ -1,8 +1,4 @@
-use std::{
-    io::Cursor,
-    ops::{Deref, DerefMut},
-    sync::Arc,
-};
+use std::{io::Cursor, sync::Arc};
 
 use anyhow::Result;
 use async_trait::async_trait;
@@ -52,11 +48,19 @@ impl TranscriberProvider for WhisperProvider {
 
         let mut params = FullParams::new(SamplingStrategy::Greedy { best_of: 1 });
 
-        params.set_language(Some("sk"));
+        params.set_language(Some("en"));
+
+        params.set_translate(false);
+        params.set_no_context(true);
+
+        params.set_token_timestamps(false);
+
         params.set_print_special(false);
         params.set_print_progress(false);
         params.set_print_realtime(false);
         params.set_print_timestamps(false);
+        params.set_suppress_blank(true);
+        params.set_suppress_non_speech_tokens(true);
 
         let mut inter_samples = vec![Default::default(); samples.len()];
         whisper_rs::convert_integer_to_float_audio(&samples, &mut inter_samples)
