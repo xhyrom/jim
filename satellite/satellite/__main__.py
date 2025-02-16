@@ -1,8 +1,14 @@
 import asyncio
 
+from .satellite import Satellite
+
 
 async def main() -> None:
     print("Hello, World!")
+    satellite = Satellite()
+
+    task = asyncio.create_task(satellite.run(), name="satellite run")
+    await task
 
 
 def run():

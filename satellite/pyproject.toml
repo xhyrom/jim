@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Jozef Steinhübl", email = "contact@xhyrom.dev"},
 ]
-dependencies = ["openwakeword>=0.6.0"]
+dependencies = ["openwakeword>=0.6.0", "numpy<2.0", "pyaudio>=0.2.14"]
 requires-python = "==3.11.*"
 readme = "README.md"
 license = {text = "Apache License 2.0"}
