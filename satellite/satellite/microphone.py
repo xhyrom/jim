@@ -4,6 +4,8 @@ import numpy as np
 import pyaudio
 import webrtcvad
 
+from .debug import time_me
+
 
 class MicrophoneInput:
     chunk: int
@@ -47,6 +49,7 @@ class MicrophoneInput:
 
         return chunks
 
+    @time_me
     def get_audio_vad(self, silence_duration=1):
         frames = []
         silent_frames = 0

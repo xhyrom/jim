@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:380b34915573affec30b7ce3dd95b70e4269ed94a26cd8f8dd3f1a8923b34caa"
+content_hash = "sha256:f2038424289f92d7487cafdc763753110a5848cc3b4f62e33d955c94f684e67a"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -316,6 +316,32 @@ groups = ["default"]
 files = [
     {file = "packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"},
     {file = "packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"},
+]
+
+[[package]]
+name = "piper-phonemize"
+version = "1.1.0"
+requires_python = ">=3.7"
+summary = "Phonemization libary used by Piper text to speech system"
+groups = ["default"]
+files = [
+    {file = "piper_phonemize-1.1.0-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:d4b9265213ab53275d52318c18226c30c1cde5ab6d829f73c6ae6b8deb49e612"},
+    {file = "piper_phonemize-1.1.0-cp311-cp311-macosx_13_0_x86_64.whl", hash = "sha256:a021b6e49e26e14246579d01264353880f261be66c03ab7cb353d28ed49a59a2"},
+    {file = "piper_phonemize-1.1.0-cp311-cp311-manylinux_2_28_aarch64.whl", hash = "sha256:793077437584cf314a6d49c9c6d9d655b4c373391da5384e832208aa80402949"},
+    {file = "piper_phonemize-1.1.0-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:c1062e00c94835e9115df7ce1d7b3b5c40c6d845cd70b2c121954faf5b8d23c7"},
+]
+
+[[package]]
+name = "piper-tts"
+version = "1.2.0"
+summary = "A fast, local neural text to speech system that sounds great and is optimized for the Raspberry Pi 4."
+groups = ["default"]
+dependencies = [
+    "onnxruntime<2,>=1.11.0",
+    "piper-phonemize~=1.1.0",
+]
+files = [
+    {file = "piper_tts-1.2.0-py3-none-any.whl", hash = "sha256:f3410aea0f8051d8a118050a5b954faeb36f6ac0da6d10fc2f8a043a8eaf27b5"},
 ]
 
 [[package]]

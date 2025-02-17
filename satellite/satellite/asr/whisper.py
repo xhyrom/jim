@@ -1,6 +1,7 @@
 import numpy as np
 from faster_whisper import WhisperModel
 
+from ..debug import time_me
 from .asr import AutomaticSpeechRecognitionService
 
 
@@ -14,6 +15,7 @@ class WhisperService(AutomaticSpeechRecognitionService):
 
         super().__init__()
 
+    @time_me
     def transcribe(self, audio: np.ndarray) -> str:
         segments, info = self.model.transcribe(
             audio, beam_size=5, language="en", condition_on_previous_text=False

@@ -3,6 +3,7 @@ from json import loads
 import numpy as np
 from vosk import KaldiRecognizer, Model, Path
 
+from ..debug import time_me
 from .asr import AutomaticSpeechRecognitionService
 
 
@@ -18,6 +19,7 @@ class VoskService(AutomaticSpeechRecognitionService):
 
         super().__init__()
 
+    @time_me
     def transcribe(self, audio: np.ndarray) -> str:
         if self.recognizer.AcceptWaveform(bytes(audio)):
             return loads(self.recognizer.Result())["text"]
