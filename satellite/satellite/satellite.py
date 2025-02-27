@@ -42,9 +42,7 @@ class Satellite:
             0.5,
         )
         self.asr_service = WhisperService("base")
-        self.tts_service = PiperService(
-            _MODELS_DIR / "piper" / "en_US-ryan-medium.onnx"
-        )
+        self.tts_service = PiperService(_MODELS_DIR / "piper" / "en_GB-cori-high.onnx")
 
     async def run(self) -> None:
         self.state = State.IDLE
