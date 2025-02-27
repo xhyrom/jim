@@ -1,5 +1,6 @@
 target/
 *.wav
+config.json
 
 # moon
 .moon/cache

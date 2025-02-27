@@ -20,5 +20,5 @@ class GoogleService(AutomaticSpeechRecognitionService):
     @time_me
     def transcribe(self, audio: np.ndarray) -> str:
         return self.recognizer.recognize_google(  # type: ignore
-            AudioData(audio, 16000, 2), language="en-us", key=self.key
+            AudioData(audio, 16000, 2), language="sk-SK", key=self.key
         )

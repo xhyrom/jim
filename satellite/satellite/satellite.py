@@ -1,5 +1,10 @@
 from enum import Enum, auto
+import logging
 from pathlib import Path
+
+from .debug import sneaky_throws
+
+from .config import Config
 
 from .asr.asr import AutomaticSpeechRecognitionService
 from .asr.whisper import WhisperService
@@ -8,9 +13,6 @@ from .speaker import SpeakerOutput
 from .tts.piper import PiperService
 from .tts.tts import TextToSpeechService
 from .wake import WakeService
-
-_DIR = Path(__file__).parent
-_MODELS_DIR = _DIR / ".." / ".." / "models"
 
 
 class State(Enum):
@@ -23,6 +25,7 @@ class State(Enum):
 
 class Satellite:
     state: State
+    config: Config
 
     microphone: MicrophoneInput
     speaker: SpeakerOutput
@@ -31,30 +34,33 @@ class Satellite:
     asr_service: AutomaticSpeechRecognitionService
     tts_service: TextToSpeechService
 
-    def __init__(self) -> None:
+    def __init__(self, config: Config) -> None:
         self.state = State.OFF
+        self.config = config
 
         self.microphone = MicrophoneInput()
         self.speaker = SpeakerOutput()
 
         self.wake_service = WakeService(
-            [_MODELS_DIR / "openwakeword" / "hey_jarvis.tflite"],
-            0.5,
+            [Path(p) for p in config.wake.model_paths],
+            config.wake.threshold,
         )
-        self.asr_service = WhisperService("base")
-        self.tts_service = PiperService(_MODELS_DIR / "piper" / "en_GB-cori-high.onnx")
+        self.asr_service = config.asr.create_service()
+        self.tts_service = config.tts.create_service()
 
+    @sneaky_throws
     async def run(self) -> None:
         self.state = State.IDLE
 
         while True:
-            if not self.wake_service.run(self.microphone):
-                pass
+            # if not self.wake_service.run(self.microphone):
+            #    pass
 
             self.state = State.LISTENING
 
             print("Listening...")
             res = self.asr_service.run(self.microphone)
+
             print("Heard:", res)
 
             self.state = State.SPEAKING

@@ -1,6 +1,8 @@
 from functools import wraps
+from logging import Logger
 from time import perf_counter_ns
-from typing import Any, Callable
+from typing import Any, Callable, Type
+import asyncio
 
 
 def format_time(ns: int) -> str:
@@ -31,6 +33,42 @@ def time_me(func: Callable | None = None, *, name: str | None = None) -> Callabl
             return result
 
         return wrapper
+
+    if func is None:
+        return decorator
+    return decorator(func)
+
+
+def sneaky_throws(
+    func: Callable | None = None,
+    *,
+    logger: Logger | None = None,
+    retry_delay: float = 1.0,
+) -> Callable:
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
+            while True:
+                try:
+                    sneaky_throws(await func(*args, **kwargs))
+                except Exception as e:
+                    if logger:
+                        logger.exception(f"Error in {func.__name__}: {str(e)}")
+
+                    await asyncio.sleep(retry_delay)
+
+        @wraps(func)
+        def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
+            try:
+                return sneaky_throws(func(*args, **kwargs))
+            except Exception as e:
+                if logger:
+                    logger.exception(f"Error in {func.__name__}: {str(e)}")
+                import time
+
+                time.sleep(retry_delay)
+
+        return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
 
     if func is None:
         return decorator

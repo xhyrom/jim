@@ -50,7 +50,7 @@ class MicrophoneInput:
         return chunks
 
     @time_me
-    def get_audio_vad(self, silence_duration=1):
+    def get_audio_vad(self, silence_duration=1) -> np.ndarray:
         frames = []
         silent_frames = 0
         frames_to_be_silent = int(silence_duration * 16000 / self.chunk)
