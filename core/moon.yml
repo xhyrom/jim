@@ -1,0 +1,10 @@
+type: application
+
+project:
+  name: core
+  description: A core for the Flyn project
+
+tasks:
+  dev:
+    command: "script/run"
+    local: true

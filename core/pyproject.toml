@@ -1,0 +1,17 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Jozef Steinhübl", email = "contact@xhyrom.dev"},
+]
+dependencies = []
+requires-python = "==3.11.*"
+readme = "README.md"
+license = {text = "Apache License 2.0"}
+
+[project.scripts]
+satellite = "satellite:__main__.run"
+
+[tool.pdm]
+distribution = false

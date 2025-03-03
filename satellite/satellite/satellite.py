@@ -53,8 +53,8 @@ class Satellite:
         self.state = State.IDLE
 
         while True:
-            # if not self.wake_service.run(self.microphone):
-            #    pass
+            if not self.wake_service.run(self.microphone):
+                pass
 
             self.state = State.LISTENING
 

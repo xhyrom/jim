@@ -1,0 +1,10 @@
+type: application
+
+project:
+  name: satellite
+  description: A satellite for the Flyn project
+
+tasks:
+  dev:
+    command: "script/run"
+    local: true
