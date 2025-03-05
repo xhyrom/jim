@@ -1,8 +1,13 @@
 import asyncio
 
+from .core import Core
+
 
 async def main() -> None:
-    print("Hello from core :)")
+    core = Core()
+
+    task = asyncio.create_task(core.run(), name="core run")
+    await task
 
 
 def run():
