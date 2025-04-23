@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from uvicorn import Config, Server
+from pathlib import Path
 
 from .endpoints import router as api_router
+from .intents.loader import IntentLoader
+from .intents.processor import IntentProcessor
+from .intents.fallback import FallbackHandler
 
 
 class Core:
@@ -9,6 +13,16 @@ class Core:
         self.app = FastAPI(title="title", description="desc", version="0.0.0")
         self.host = host
         self.port = port
+
+        core_path = Path(__file__).parent.parent
+        project_path = core_path.parent
+        intents_path = project_path / "intents"
+
+        self.intent_loader = IntentLoader(intents_path)
+        self.intent_loader.load_all_intents()
+
+        self.intent_processor = IntentProcessor(self.intent_loader)
+        self.app.state.intent_processor = self.intent_processor
 
         self.setup_routes()
 

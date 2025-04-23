@@ -1,0 +1,14 @@
+skill: time
+intents:
+  - name: get_time
+    description: "Get the current time"
+    examples:
+      - "what time is it"
+      - "tell me the time"
+      - "current time"
+    patterns:
+      - "what(?:'s| is) the time(?: now)?"
+      - "tell me the time"
+      - "current time"
+    entities: []
+    handler: time.get_time

@@ -1,0 +1,22 @@
+skill: weather
+intents:
+  - name: get_weather
+    description: "Get current weather conditions"
+    examples:
+      - "what's the weather like"
+      - "how's the weather"
+      - "weather forecast"
+      - "is it raining"
+    patterns:
+      - "what(?:'s| is) the weather(?:\\s+(?:like|for|in)\\s*(?P<location>[\\w\\s]+)?)?(?:\\s+(?:today|now|tomorrow))?"
+      - "how(?:'s| is) the weather(?:\\s+(?:in|for)\\s*(?P<location>[\\w\\s]+)?)?(?:\\s+(?:today|now|tomorrow))?"
+      - "weather(?:\\s+(?:forecast|report))?(?:\\s+(?:for|in)\\s*(?P<location>[\\w\\s]+)?)?(?:\\s+(?:today|tomorrow|now))?"
+      - "is it (?P<condition>raining|snowing|sunny|cloudy|windy)(?:\\s+(?:in|at)\\s*(?P<location>[\\w\\s]+))?"
+    entities:
+      - name: location
+        type: location
+        required: false
+      - name: condition
+        type: weather_condition
+        required: false
+    handler: weather.get_weather
