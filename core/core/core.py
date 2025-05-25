@@ -9,7 +9,7 @@ from .intents.fallback import FallbackHandler
 
 
 class Core:
-    def __init__(self, host="0.0.0.0", port=8000):
+    def __init__(self, host="0.0.0.0", port=31415):
         self.app = FastAPI(title="title", description="desc", version="0.0.0")
         self.host = host
         self.port = port
