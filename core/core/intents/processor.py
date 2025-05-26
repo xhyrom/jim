@@ -1,12 +1,15 @@
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any
+
+from ..config import Config
 from .loader import IntentLoader
 from .fallback import FallbackHandler
 from .nlu import NLUEngine, PatternNLU
 
 
 class IntentProcessor:
-    def __init__(self, intent_loader: IntentLoader):
+    def __init__(self, intent_loader: IntentLoader, config: Config):
         self.intent_loader = intent_loader
+        self.config = config
         self.fallback_handler = FallbackHandler()
         self.nlu_engines = []
 
@@ -55,7 +58,7 @@ class IntentProcessor:
         if intent_handler:
             try:
                 result = intent_handler(
-                    intent_entities, user_id=user_id, device_id=device_id
+                    intent_entities, user_id=user_id, device_id=device_id, config=self.config
                 )
 
                 if isinstance(result, dict) and "response" in result:
