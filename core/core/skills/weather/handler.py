@@ -1,6 +1,7 @@
 import requests
 from typing import Dict, Any
 
+
 def get_current_location_from_ip(device_id=None) -> Dict[str, Any]:
     try:
         response = requests.get("http://ip-api.com/json/")
@@ -11,7 +12,7 @@ def get_current_location_from_ip(device_id=None) -> Dict[str, Any]:
                 "country": data.get("country"),
                 "lat": data.get("lat"),
                 "lon": data.get("lon"),
-                "success": True
+                "success": True,
             }
     except:
         pass
@@ -28,7 +29,7 @@ def get_weather(entities: Dict[str, Any], **context) -> Dict[str, Any]:
         return {
             "response": "I'm sorry, but the weather service is not properly configured. Please add an OpenWeather API key to the configuration.",
             "action": None,
-            "data": {"error": "API key not configured"}
+            "data": {"error": "API key not configured"},
         }
 
     units = weather_config.units
@@ -37,7 +38,12 @@ def get_weather(entities: Dict[str, Any], **context) -> Dict[str, Any]:
     device_id = context.get("device_id", "unknown")
 
     use_current_location = False
-    if not location or location.lower() in ["here", "current location", "this place", "your current location"]:
+    if not location or location.lower() in [
+        "here",
+        "current location",
+        "this place",
+        "your current location",
+    ]:
         use_current_location = True
         location_data = get_current_location_from_ip(device_id)
 
@@ -49,19 +55,14 @@ def get_weather(entities: Dict[str, Any], **context) -> Dict[str, Any]:
             return {
                 "response": "I'm sorry, I couldn't determine your current location. Could you please specify a location?",
                 "action": None,
-                "data": {
-                    "error": "Could not determine current location"
-                }
+                "data": {"error": "Could not determine current location"},
             }
 
     try:
         openweather_base_url = "https://api.openweathermap.org/data/2.5/weather"
-        params = {
-            "appid": api_key,
-            "units": units
-        }
+        params = {"appid": api_key, "units": units}
 
-        if use_current_location and 'lat' in locals() and 'lon' in locals():
+        if use_current_location and "lat" in locals() and "lon" in locals():
             params["lat"] = lat
             params["lon"] = lon
         else:
@@ -98,17 +99,13 @@ def get_weather(entities: Dict[str, Any], **context) -> Dict[str, Any]:
                 "feels_like": f"{feels_like}{temp_unit}",
                 "humidity": f"{humidity}%",
                 "wind_speed": f"{wind_speed} {wind_unit}",
-                "raw": weather_data
-            }
+                "raw": weather_data,
+            },
         }
 
     except Exception as e:
-
         return {
             "response": f"I'm sorry, I encountered an issue while checking the weather for {location}.",
             "action": None,
-            "data": {
-                "error": str(e),
-                "location": location
-            }
+            "data": {"error": str(e), "location": location},
         }

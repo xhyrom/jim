@@ -58,7 +58,10 @@ class IntentProcessor:
         if intent_handler:
             try:
                 result = intent_handler(
-                    intent_entities, user_id=user_id, device_id=device_id, config=self.config
+                    intent_entities,
+                    user_id=user_id,
+                    device_id=device_id,
+                    config=self.config,
                 )
 
                 if isinstance(result, dict) and "response" in result:

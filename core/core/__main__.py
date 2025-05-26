@@ -7,6 +7,7 @@ from .config import Config
 _DIR = Path(__file__).parent
 _CONFIG_PATH = _DIR / ".." / "config.json"
 
+
 async def main() -> None:
     print("Loading config...")
     config = Config.from_file(_CONFIG_PATH)

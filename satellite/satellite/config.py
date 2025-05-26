@@ -92,6 +92,7 @@ class WakeConfig:
             threshold=data.get("threshold", 0.5),
         )
 
+
 @dataclass
 class CoreConfig:
     url: str = "http://localhost:31415"
@@ -100,9 +101,9 @@ class CoreConfig:
     @staticmethod
     def from_dict(data: dict[str, Any]) -> "CoreConfig":
         return CoreConfig(
-            url=data.get("url", "http://localhost:31415"),
-            api_key=data.get("api_key")
+            url=data.get("url", "http://localhost:31415"), api_key=data.get("api_key")
         )
+
 
 @dataclass
 class Config:

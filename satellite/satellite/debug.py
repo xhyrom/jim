@@ -1,7 +1,7 @@
 from functools import wraps
 from logging import Logger
 from time import perf_counter_ns
-from typing import Any, Callable, Type
+from typing import Any, Callable
 import asyncio
 
 

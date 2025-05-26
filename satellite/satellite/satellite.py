@@ -1,5 +1,4 @@
 from enum import Enum, auto
-import logging
 from pathlib import Path
 
 from .debug import sneaky_throws
@@ -7,10 +6,8 @@ from .debug import sneaky_throws
 from .config import Config
 
 from .asr.asr import AutomaticSpeechRecognitionService
-from .asr.whisper import WhisperService
 from .microphone import MicrophoneInput
 from .speaker import SpeakerOutput
-from .tts.piper import PiperService
 from .tts.tts import TextToSpeechService
 from .wake import WakeService
 from .core.client import CoreClient
@@ -72,10 +69,14 @@ class Satellite:
 
             if "error" in response:
                 print(f"Error from Core API: {response['error']}")
-                response_text = "Sorry, I'm having trouble connecting to my brain right now."
+                response_text = (
+                    "Sorry, I'm having trouble connecting to my brain right now."
+                )
             else:
                 print(f"Core response: {response}")
-                response_text = response.get("response", "I'm not sure how to respond to that.")
+                response_text = response.get(
+                    "response", "I'm not sure how to respond to that."
+                )
 
             self.state = State.SPEAKING
 

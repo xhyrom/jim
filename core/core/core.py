@@ -5,8 +5,8 @@ from pathlib import Path
 from .endpoints import router as api_router
 from .intents.loader import IntentLoader
 from .intents.processor import IntentProcessor
-from .intents.fallback import FallbackHandler
 from .config import Config
+
 
 class Core:
     def __init__(self, config: Config):
@@ -30,6 +30,8 @@ class Core:
         self.app.include_router(api_router)
 
     async def run(self):
-        config = UvicornConfig(app=self.app, host=self.host, port=self.port, log_level="info")
+        config = UvicornConfig(
+            app=self.app, host=self.host, port=self.port, log_level="info"
+        )
         server = Server(config)
         await server.serve()
