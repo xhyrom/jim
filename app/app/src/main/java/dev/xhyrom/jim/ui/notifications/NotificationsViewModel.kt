@@ -1,4 +1,4 @@
-package dev.xhyrom.flyn.ui.notifications
+package dev.xhyrom.jim.ui.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

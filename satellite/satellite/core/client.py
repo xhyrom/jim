@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class CoreClient:
-    """Client for communicating with the Flyn Core API"""
+    """Client for communicating with the jim Core API"""
 
     def __init__(
         self, base_url: str = "http://localhost:31415", api_key: Optional[str] = None

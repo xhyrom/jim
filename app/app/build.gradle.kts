@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.xhyrom.flyn"
+    namespace = "dev.xhyrom.jim"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "dev.xhyrom.flyn"
+        applicationId = "dev.xhyrom.jim"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

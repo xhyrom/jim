@@ -2,7 +2,7 @@ type: application
 
 project:
   name: satellite
-  description: A satellite for the Flyn project
+  description: A satellite for the jim project
 
 tasks:
   dev:

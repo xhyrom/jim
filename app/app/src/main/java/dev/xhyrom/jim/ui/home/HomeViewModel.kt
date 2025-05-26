@@ -1,4 +1,4 @@
-package dev.xhyrom.flyn.ui.home
+package dev.xhyrom.jim.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

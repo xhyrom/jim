@@ -1,4 +1,4 @@
-package dev.xhyrom.flyn
+package dev.xhyrom.jim
 
 import org.junit.Test
 

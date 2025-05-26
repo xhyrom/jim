@@ -2,7 +2,7 @@ type: application
 
 project:
   name: core
-  description: A core for the Flyn project
+  description: A core for the jim project
 
 tasks:
   dev:
