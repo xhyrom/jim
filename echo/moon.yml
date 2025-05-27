@@ -1,0 +1,5 @@
+type: library
+
+project:
+  name: echo
+  description: A library for parsing jim's intents format
