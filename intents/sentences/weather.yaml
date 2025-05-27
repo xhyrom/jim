@@ -1,7 +1,14 @@
 intents:
   get_weather:
     patterns:
-      - "what('s| is) the weather( like)? {location} {date}"
+      - "what('s| is) the weather( like)?( in {location})?( {date})?"
+      - "how('s| is) the weather( in {location})?( {date})?"
+      - "weather forecast( for {location})?( {date})?"
+      - "will it rain( in {location})?( {date})?"
+      - "what are the conditions( in {location})?( {date})?"
+      - "what can I expect( weather-wise)?( in {location})?( {date})?"
+      - "how's it looking outside( in {location})?"
+      - "what's the forecast( for {location})?( {date})?"
 
   get_temperature:
     patterns:

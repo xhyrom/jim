@@ -13,5 +13,8 @@ license = {text = "Apache License 2.0"}
 [project.scripts]
 satellite = "satellite:__main__.run"
 
+[tool.pdm.dependencies]
+echo = { path = "../echo" }
+
 [tool.pdm]
 distribution = false

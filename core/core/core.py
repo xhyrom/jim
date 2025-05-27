@@ -4,15 +4,18 @@ from fastapi import FastAPI
 from uvicorn import Config as UvicornConfig
 from uvicorn import Server
 
+from echo import create_echo
+
 from .config import AppConfig
 from .endpoints import router as api_router
-from .intents.loader import IntentLoader
-from .intents.processor import IntentProcessor
+from .handlers import HandlerRegistry
 
 
 class Core:
     def __init__(self, config: AppConfig):
-        self.app = FastAPI(title="title", description="desc", version="0.0.0")
+        self.app = FastAPI(
+            title="Jim Core", description="Intent processing core", version="0.1.0"
+        )
         self.host = config.server.host
         self.port = config.server.port
 
@@ -20,11 +23,13 @@ class Core:
         project_path = core_path.parent
         intents_path = project_path / "intents"
 
-        self.intent_loader = IntentLoader(intents_path)
-        self.intent_loader.load_all_intents()
+        self.echo = create_echo(intents_path)
 
-        self.intent_processor = IntentProcessor(self.intent_loader, config)
-        self.app.state.intent_processor = self.intent_processor
+        self.handler_registry = HandlerRegistry()
+
+        self.app.state.echo = self.echo
+        self.app.state.config = config
+        self.app.state.handler_registry = self.handler_registry
 
         self.setup_routes()
 

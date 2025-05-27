@@ -1,5 +1,9 @@
 import asyncio
+import sys
 from pathlib import Path
+
+echo_path = Path(__file__).parent.parent.parent / "echo"
+sys.path.insert(0, str(echo_path))
 
 from .config import AppConfig
 from .core import Core

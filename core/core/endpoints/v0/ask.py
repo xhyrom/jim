@@ -12,14 +12,22 @@ async def ask(request: Request, data: Dict[str, Any] = Body(...)):
     user_id = data.get("user_id", "default")
     device_id = data.get("device_id", "unknown")
 
-    intent_processor = request.app.state.intent_processor
+    echo = request.app.state.echo
+    handler_registry = request.app.state.handler_registry
+    config = request.app.state.config
 
-    result = intent_processor.process(text, lang, user_id, device_id)
+    result = echo.process(text)
+
+    result["echo"] = echo
+
+    response_data = handler_registry.process_intent(
+        result=result, user_id=user_id, device_id=device_id, config=config
+    )
 
     return {
         "status": "ok",
-        "intent": result.get("intent"),
-        "confidence": result.get("confidence"),
-        "response": result.get("response"),
-        "action": result.get("action", None),
+        "intent": response_data.get("intent"),
+        "confidence": response_data.get("confidence"),
+        "response": response_data.get("response"),
+        "action": response_data.get("action", None),
     }
