@@ -1,0 +1,46 @@
+entities:
+  weather_condition:
+    type: weather_condition
+    description: "Weather conditions like sunny, rainy, cloudy"
+    examples:
+      - "sunny"
+      - "rainy"
+      - "cloudy"
+      - "snowing"
+      - "thunderstorms"
+      - "hailing"
+    patterns:
+      - "(?P<weather_condition>sunny|clear|cloudy|overcast|rainy|raining|snowy|snowing|stormy|windy|foggy|misty|hailing|sleeting|thunderstorms?|showers)"
+
+  temperature:
+    type: temperature
+    description: "Temperature values with units"
+    examples:
+      - "72°F"
+      - "22°C"
+      - "below freezing"
+    patterns:
+      - "(?P<temperature>\\d+\\s*(?:degrees|°)\\s*(?:C|F|Celsius|Fahrenheit)?)"
+      - "(?P<temperature>(?:freezing|cold|cool|mild|warm|hot|boiling))"
+
+  precipitation:
+    type: precipitation
+    description: "Types of precipitation and probability"
+    examples:
+      - "80% chance of rain"
+      - "light snow"
+      - "heavy rainfall"
+    patterns:
+      - "(?P<precipitation>(?:\\d+%\\s+)?chance of (?:rain|snow|sleet|hail|showers|thunderstorms))"
+      - "(?P<precipitation>(?:light|moderate|heavy)\\s+(?:rain|snow|sleet|hail|showers|drizzle|downpour))"
+
+  wind:
+    type: wind
+    description: "Wind conditions including speed and direction"
+    examples:
+      - "strong winds"
+      - "10 mph easterly winds"
+      - "light breeze"
+    patterns:
+      - "(?P<wind>\\d+\\s+(?:mph|kmh|knots)\\s+(?:north|south|east|west|(?:north|south)(?:east|west))?\\s+wind)"
+      - "(?P<wind>(?:light|moderate|strong|high|gale force)\\s+(?:winds?|breeze))"

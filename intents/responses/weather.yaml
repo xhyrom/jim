@@ -1,0 +1,100 @@
+responses:
+  intents:
+    get_weather:
+      default: "The weather is {weather_condition} with temperatures around {temperature}."
+      contexts:
+        with_location_date:
+          - "The weather in {location} on {date} is {weather_condition} with temperatures around {temperature}."
+          - "For {location} on {date}, expect {weather_condition} conditions with temperatures near {temperature}."
+          - "The forecast for {location} on {date} shows {weather_condition}, with temperatures at {temperature}."
+
+        with_location:
+          - "Currently in {location}, it's {weather_condition} with temperatures around {temperature}."
+          - "The weather in {location} is {weather_condition} and {temperature}."
+          - "In {location}, you can expect {weather_condition} conditions and {temperature}."
+
+        with_date:
+          - "On {date}, expect {weather_condition} conditions with temperatures around {temperature}."
+          - "The forecast for {date} shows {weather_condition} weather with temperatures near {temperature}."
+          - "{date}'s weather will be {weather_condition} with temperatures at {temperature}."
+
+        with_precipitation:
+          - "The weather is {weather_condition} with {precipitation} and temperatures around {temperature}."
+          - "Expect {weather_condition} conditions with {precipitation} and temperatures near {temperature}."
+
+        with_wind:
+          - "The weather is {weather_condition} with {wind} and temperatures around {temperature}."
+          - "Conditions are {weather_condition} with {wind} and temperatures at {temperature}."
+
+        with_all:
+          - "The forecast shows {weather_condition} conditions, {precipitation}, {wind}, and temperatures around {temperature}."
+          - "Expect {weather_condition} weather with {precipitation}, {wind}, and temperatures near {temperature}."
+
+    get_temperature:
+      default: "The temperature is {temperature}."
+      contexts:
+        with_location:
+          - "In {location}, the temperature is currently {temperature}."
+          - "It's {temperature} in {location} right now."
+          - "The current temperature in {location} is {temperature}."
+
+        with_date:
+          - "On {date}, the temperature will be around {temperature}."
+          - "The forecast for {date} predicts temperatures of {temperature}."
+          - "Expect temperatures of {temperature} on {date}."
+
+        with_location_date:
+          - "In {location} on {date}, temperatures will be around {temperature}."
+          - "The temperature in {location} on {date} is expected to be {temperature}."
+          - "For {location} on {date}, expect temperatures of {temperature}."
+
+        with_high_low:
+          - "The high will be {high_temperature} and the low will be {low_temperature}."
+          - "Temperatures will range from {low_temperature} to {high_temperature}."
+          - "Expect a high of {high_temperature} and a low of {low_temperature}."
+
+    get_precipitation:
+      default: "The precipitation forecast shows {precipitation}."
+      contexts:
+        with_location:
+          - "In {location}, expect {precipitation}."
+          - "The precipitation forecast for {location} shows {precipitation}."
+          - "{location} has {precipitation} in the forecast."
+
+        with_date:
+          - "On {date}, expect {precipitation}."
+          - "The precipitation forecast for {date} shows {precipitation}."
+          - "{date}'s forecast includes {precipitation}."
+
+        with_location_date:
+          - "In {location} on {date}, expect {precipitation}."
+          - "The forecast for {location} on {date} includes {precipitation}."
+          - "{location}'s precipitation forecast for {date} shows {precipitation}."
+
+        with_umbrella_needed:
+          - "Yes, you should bring an umbrella. There's {precipitation} in the forecast."
+          - "An umbrella would be a good idea. Expect {precipitation}."
+          - "Better safe than sorry - bring an umbrella. There's {precipitation} expected."
+
+        with_umbrella_not_needed:
+          - "No need for an umbrella. The forecast shows {precipitation}."
+          - "You can leave the umbrella at home. There's only {precipitation} expected."
+          - "An umbrella shouldn't be necessary. The forecast indicates {precipitation}."
+
+    get_wind:
+      default: "The wind forecast shows {wind}."
+      contexts:
+        with_location:
+          - "In {location}, expect {wind}."
+          - "Wind conditions in {location} show {wind}."
+          - "{location} is experiencing {wind}."
+
+        with_date:
+          - "On {date}, expect {wind}."
+          - "The wind forecast for {date} shows {wind}."
+          - "Winds on {date} will be {wind}."
+
+        with_location_date:
+          - "In {location} on {date}, expect {wind}."
+          - "The wind forecast for {location} on {date} shows {wind}."
+          - "Wind conditions for {location} on {date} will be {wind}."

@@ -1,0 +1,30 @@
+intents:
+  get_weather:
+    patterns:
+      - "what('s| is) the weather( like)? {location} {date}"
+
+  get_temperature:
+    patterns:
+      - "how (hot|cold) is it( in {location})?( {date})?"
+      - "what('s| is) the temperature( in {location})?( {date})?"
+      - "temperature( in {location})?( {date})?"
+      - "what('s| is| are) the (highs?|lows?)( in {location})?( {date})?"
+      - "what's the (high|low) temperature( in {location})?( {date})?"
+      - "how (warm|cool) is it going to be( in {location})?( {date})?"
+
+  get_precipitation:
+    patterns:
+      - "will it rain( in {location})?( {date})?"
+      - "is it (going to|supposed to) rain( in {location})?( {date})?"
+      - "what's the chance of (rain|snow|precipitation)( in {location})?( {date})?"
+      - "do I need an umbrella( in {location})?( {date})?"
+      - "should I expect (rain|snow|storms)( in {location})?( {date})?"
+      - "precipitation forecast( for {location})?( {date})?"
+
+  get_wind:
+    patterns:
+      - "how windy is it( in {location})?( {date})?"
+      - "what's the wind (speed|direction)( in {location})?( {date})?"
+      - "is it breezy( in {location})?( {date})?"
+      - "wind forecast( for {location})?( {date})?"
+      - "are there strong winds( in {location})?( {date})?"

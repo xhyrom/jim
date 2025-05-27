@@ -1,63 +1,79 @@
 from dataclasses import dataclass, field
-from json import loads
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-_DIR = Path(__file__).parent
-_PROJECT_ROOT = _DIR.parent.parent
-_CONFIG_PATH = _PROJECT_ROOT / "config.json"
+import tomli
 
 
 @dataclass
-class WeatherSkillConfig:
+class ServerConfig:
+    host: str = "127.0.0.1"
+    port: int = 31415
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> "ServerConfig":
+        return ServerConfig(
+            host=data.get("host", "127.0.0.1"), port=data.get("port", 31415)
+        )
+
+
+@dataclass
+class WeatherConfig:
+    base_url: str = "https://api.openweathermap.org/data/3.0/onecall/"
     api_key: str = ""
+    implementation: str = "openweathermap"
     units: str = "metric"
 
     @staticmethod
-    def from_dict(data: dict[str, Any]) -> "WeatherSkillConfig":
-        return WeatherSkillConfig(
-            api_key=data.get("api_key", ""), units=data.get("units", "metric")
+    def from_dict(data: dict[str, Any]) -> "WeatherConfig":
+        return WeatherConfig(
+            base_url=data.get(
+                "base_url", "https://api.openweathermap.org/data/3.0/onecall/"
+            ),
+            api_key=data.get("api_key", ""),
+            implementation=data.get("implementation", "openweathermap"),
+            units=data.get("units", "metric"),
         )
 
 
 @dataclass
-class SkillConfig:
-    weather: WeatherSkillConfig = field(default_factory=WeatherSkillConfig)
+class GeocodingConfig:
+    base_url: str = "https://nominatim.openstreetmap.org/"
+    user_agent: str = "jim"
+    implementation: str = "nominatim"
 
     @staticmethod
-    def from_dict(data: dict[str, Any]) -> "SkillConfig":
-        return SkillConfig(
-            weather=WeatherSkillConfig.from_dict(data.get("weather", {})),
+    def from_dict(data: dict[str, Any]) -> "GeocodingConfig":
+        return GeocodingConfig(
+            base_url=data.get("base_url", "https://nominatim.openstreetmap.org/"),
+            user_agent=data.get("user_agent", "jim"),
+            implementation=data.get("implementation", "nominatim"),
         )
 
 
 @dataclass
-class Config:
-    host: str = "0.0.0.0"
-    port: int = 31415
+class AppConfig:
+    server: ServerConfig = field(default_factory=ServerConfig)
+    weather: WeatherConfig = field(default_factory=WeatherConfig)
+    geocoding: GeocodingConfig = field(default_factory=GeocodingConfig)
     debug: bool = False
-    skills: SkillConfig = field(default_factory=SkillConfig)
 
     @staticmethod
-    def from_file(path: Path) -> "Config":
+    def from_file(path: Path) -> "AppConfig":
         try:
-            with open(path) as f:
-                data = loads(f.read())
+            with open(path, "rb") as f:
+                data = tomli.load(f)
 
-            return Config.from_dict(data)
-        except:
-            return Config()
+            return AppConfig.from_dict(data)
+        except Exception as e:
+            print(f"Error loading config: {e}")
+            return AppConfig()
 
     @staticmethod
-    def from_dict(data: dict[str, Any]) -> "Config":
-        return Config(
-            host=data.get("host", "0.0.0.0"),
-            port=data.get("port", 31415),
+    def from_dict(data: dict[str, Any]) -> "AppConfig":
+        return AppConfig(
+            server=ServerConfig.from_dict(data.get("server", {})),
+            weather=WeatherConfig.from_dict(data.get("weather", {})),
+            geocoding=GeocodingConfig.from_dict(data.get("geocoding", {})),
             debug=data.get("debug", False),
-            skills=SkillConfig.from_dict(data["skills"])
-            if "skills" in data
-            else SkillConfig(),
         )
-
-
-_config: Optional[Config] = None

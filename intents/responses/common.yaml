@@ -1,0 +1,17 @@
+responses:
+  intents:
+    greeting:
+      default: "Hello! How can I help you today?"
+      contexts:
+        morning:
+          - "Good morning! How can I help you start your day?"
+          - "Morning! What can I do for you?"
+        afternoon:
+          - "Good afternoon! What can I assist you with?"
+          - "Hello there! How's your day going?"
+        evening:
+          - "Good evening! How may I help you tonight?"
+          - "Evening! How can I be of service?"
+        casual:
+          - "Hey! What's up?"
+          - "Hi there! Need anything?"

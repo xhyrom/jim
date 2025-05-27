@@ -1,0 +1,27 @@
+responses:
+  intents:
+    get_time:
+      default: "The current time is {time}."
+      contexts:
+        formal:
+          - "The current time is {time}."
+          - "It is currently {time}."
+        casual:
+          - "It's {time} right now."
+          - "The time is {time}."
+          - "Right now, it's {time}."
+        morning:
+          - "Good morning! It's {time}."
+        evening:
+          - "Good evening! The time is now {time}."
+
+    get_date:
+      default: "Today's date is {date}."
+      contexts:
+        standard:
+          - "Today's date is {date}."
+          - "It's {date} today."
+          - "The date today is {date}."
+        with_day:
+          - "Today is {day_of_week}, {date}."
+          - "It's {day_of_week}, {date}."

@@ -1,13 +1,13 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
-from ..config import Config
-from .loader import IntentLoader
+from ..config import AppConfig
 from .fallback import FallbackHandler
+from .loader import IntentLoader
 from .nlu import NLUEngine, PatternNLU
 
 
 class IntentProcessor:
-    def __init__(self, intent_loader: IntentLoader, config: Config):
+    def __init__(self, intent_loader: IntentLoader, config: AppConfig):
         self.intent_loader = intent_loader
         self.config = config
         self.fallback_handler = FallbackHandler()

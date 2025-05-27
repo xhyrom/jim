@@ -1,0 +1,24 @@
+entities:
+  number:
+    type: number
+    description: "Numeric values"
+    examples:
+      - "5"
+      - "twenty"
+      - "3.14"
+      - "hundred"
+    patterns:
+      - "(?P<number>\\d+(?:\\.\\d+)?)"
+      - "(?P<number>one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|forty|fifty|hundred|thousand)"
+
+  duration:
+    type: duration
+    description: "Time spans"
+    examples:
+      - "5 minutes"
+      - "2 hours"
+      - "next week"
+      - "for 3 days"
+    patterns:
+      - "(?P<duration>\\d+\\s+(?:second|minute|hour|day|week|month|year)s?)"
+      - "(?P<duration>(?:a|an|one)\\s+(?:second|minute|hour|day|week|month|year))"

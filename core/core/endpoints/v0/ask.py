@@ -1,5 +1,6 @@
+from typing import Any, Dict
+
 from fastapi import APIRouter, Body, Request
-from typing import Dict, Any
 
 router = APIRouter()
 
@@ -7,12 +8,13 @@ router = APIRouter()
 @router.post("")
 async def ask(request: Request, data: Dict[str, Any] = Body(...)):
     text = data.get("text", "")
+    lang = data.get("lang", "en")
     user_id = data.get("user_id", "default")
     device_id = data.get("device_id", "unknown")
 
     intent_processor = request.app.state.intent_processor
 
-    result = intent_processor.process(text, user_id, device_id)
+    result = intent_processor.process(text, lang, user_id, device_id)
 
     return {
         "status": "ok",

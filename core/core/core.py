@@ -1,18 +1,20 @@
-from fastapi import FastAPI
-from uvicorn import Config as UvicornConfig, Server
 from pathlib import Path
 
+from fastapi import FastAPI
+from uvicorn import Config as UvicornConfig
+from uvicorn import Server
+
+from .config import AppConfig
 from .endpoints import router as api_router
 from .intents.loader import IntentLoader
 from .intents.processor import IntentProcessor
-from .config import Config
 
 
 class Core:
-    def __init__(self, config: Config):
+    def __init__(self, config: AppConfig):
         self.app = FastAPI(title="title", description="desc", version="0.0.0")
-        self.host = config.host
-        self.port = config.port
+        self.host = config.server.host
+        self.port = config.server.port
 
         core_path = Path(__file__).parent.parent
         project_path = core_path.parent

@@ -1,0 +1,15 @@
+entities:
+  location:
+    type: location
+    description: "A specific place or area, such as a city, country, or landmark."
+    examples:
+      - "Paris"
+      - "New York"
+      - "Tokyo"
+      - "the Eiffel Tower"
+      - "the Grand Canyon"
+    patterns:
+      - "in (?P<location>[A-Z][a-zA-Z\\s]+)"
+      - "at (?P<location>[A-Z][a-zA-Z\\s]+)"
+      - "to (?P<location>[A-Z][a-zA-Z\\s]+)"
+      - "near (?P<location>[A-Z][a-zA-Z\\s]+)"

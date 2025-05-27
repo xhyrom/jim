@@ -1,18 +1,18 @@
-from pathlib import Path
 import asyncio
+from pathlib import Path
 
+from .config import AppConfig
 from .core import Core
-from .config import Config
 
 _DIR = Path(__file__).parent
-_CONFIG_PATH = _DIR / ".." / "config.json"
+_CONFIG_PATH = _DIR / ".." / "config.toml"
 
 
 async def main() -> None:
     print("Loading config...")
-    config = Config.from_file(_CONFIG_PATH)
+    config = AppConfig.from_file(_CONFIG_PATH)
 
-    print("Starting Core...")
+    print("Starting core...")
     core = Core(config)
 
     task = asyncio.create_task(core.run(), name="core run")

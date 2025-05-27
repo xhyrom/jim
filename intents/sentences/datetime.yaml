@@ -1,0 +1,14 @@
+intents:
+  get_date:
+    patterns:
+      - "what(?:'s| is) the date(?: today)?"
+      - "tell me the date"
+      - "current date"
+      - "what date is it"
+
+  get_time:
+    patterns:
+      - "what(?:'s| is) the time(?: now)?"
+      - "tell me the time"
+      - "current time"
+      - "what time is it"

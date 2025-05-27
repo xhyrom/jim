@@ -1,0 +1,26 @@
+entities:
+  time:
+    type: time
+    description: "Time references like specific hours or relative time"
+    examples:
+      - "3:00 PM"
+      - "noon"
+      - "midnight"
+      - "in 5 minutes"
+      - "evening"
+    patterns:
+      - "(?P<time>\\d{1,2}:\\d{2}\\s*(?:AM|PM|am|pm)?)"
+      - "(?P<time>morning|afternoon|evening|night|noon|midnight)"
+
+  date:
+    type: date
+    description: "Calendar dates or relative date references"
+    examples:
+      - "tomorrow"
+      - "next Friday"
+      - "December 25th"
+      - "May 2023"
+    patterns:
+      - "(?P<date>today|tomorrow|yesterday)"
+      - "(?P<date>next|this|last)\\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
+      - "(?P<date>\\d{1,2}/\\d{1,2}/\\d{2,4})"
