@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any, Dict
 
 
-def get_date(entities: Dict[str, Any], **context) -> Dict[str, Any]:
+async def get_date(entities: Dict[str, Any], **context) -> Dict[str, Any]:
     """
     Handle date inquiries
 
