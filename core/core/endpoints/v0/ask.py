@@ -20,7 +20,7 @@ async def ask(request: Request, data: Dict[str, Any] = Body(...)):
 
     result["echo"] = echo
 
-    response_data = handler_registry.process_intent(
+    response_data = await handler_registry.process_intent(
         result=result, user_id=user_id, device_id=device_id, config=config
     )
 

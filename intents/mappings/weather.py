@@ -5,16 +5,19 @@ def get_weather_mapping(context: Dict[str, Any]) -> str:
     """Determine the appropriate response template for get_weather intent."""
 
     has_location = "location" in context and context["location"]
-    has_date = "date" in context and context["date"]
-    has_precipitation = "precipitation" in context and context["precipitation"]
-    has_wind = "wind" in context and context["wind"]
+    has_date = "date" in context and context["date"] != "today"
+    has_precipitation = context.get("has_precipitation", False)
+    has_wind = context.get("wind", "")
 
-    if has_precipitation and has_wind:
-        return "get_weather.with_all"
-    elif has_precipitation:
+    if has_precipitation:
+        if has_location:
+            return "get_weather.with_precipitation_location"
         return "get_weather.with_precipitation"
-    elif has_wind:
-        return "get_weather.with_wind"
+
+    if "strong" in has_wind:
+        if has_location:
+            return "get_weather.with_strong_wind_location"
+        return "get_weather.with_strong_wind"
 
     if has_location and has_date:
         return "get_weather.with_location_date"
@@ -30,16 +33,13 @@ def get_temperature_mapping(context: Dict[str, Any]) -> str:
     """Determine the appropriate response template for get_temperature intent."""
 
     has_location = "location" in context and context["location"]
-    has_date = "date" in context and context["date"]
-    has_high_low = (
-        "high_temperature" in context
-        and context["high_temperature"]
-        and "low_temperature" in context
-        and context["low_temperature"]
-    )
+    has_date = "date" in context and context["date"] != "today"
+    has_feels_like = "feels_like" in context and context["feels_like"]
 
-    if has_high_low:
-        return "get_temperature.with_high_low"
+    if has_feels_like:
+        if has_location:
+            return "get_temperature.with_feels_like_location"
+        return "get_temperature.with_feels_like"
     elif has_location and has_date:
         return "get_temperature.with_location_date"
     elif has_location:
@@ -54,15 +54,16 @@ def get_precipitation_mapping(context: Dict[str, Any]) -> str:
     """Determine the appropriate response template for get_precipitation intent."""
 
     has_location = "location" in context and context["location"]
-    has_date = "date" in context and context["date"]
-    is_umbrella_query = context.get("query_type") == "umbrella"
-    precipitation_chance = context.get("precipitation_chance", 0)
+    has_date = "date" in context and context["date"] != "today"
+    has_precipitation = context.get("has_precipitation", False)
 
-    if is_umbrella_query:
-        if precipitation_chance > 30:
-            return "get_precipitation.with_umbrella_needed"
-        else:
-            return "get_precipitation.with_umbrella_not_needed"
+    if not has_precipitation:
+        if has_location:
+            return "get_precipitation.no_rain_location"
+        return "get_precipitation.no_rain"
+
+    if "umbrella" in context.get("text", "").lower():
+        return "get_precipitation.with_umbrella"
 
     if has_location and has_date:
         return "get_precipitation.with_location_date"
@@ -78,7 +79,7 @@ def get_wind_mapping(context: Dict[str, Any]) -> str:
     """Determine the appropriate response template for get_wind intent."""
 
     has_location = "location" in context and context["location"]
-    has_date = "date" in context and context["date"]
+    has_date = "date" in context and context["date"] != "today"
 
     if has_location and has_date:
         return "get_wind.with_location_date"

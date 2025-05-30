@@ -45,7 +45,7 @@ class HandlerRegistry:
             except (ImportError, AttributeError) as e:
                 print(f"Error loading handlers from {skill_dir.name}: {e}")
 
-    def process_intent(
+    async def process_intent(
         self, result: Dict[str, Any], user_id: str, device_id: str, config: Any
     ) -> Dict[str, Any]:
         intent_name = result.get("intent")
@@ -61,7 +61,7 @@ class HandlerRegistry:
         try:
             entities = result.get("entities", {})
 
-            handler_result = handler(
+            handler_result = await handler(
                 entities=entities, user_id=user_id, device_id=device_id, config=config
             )
 

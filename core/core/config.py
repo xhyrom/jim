@@ -19,7 +19,7 @@ class ServerConfig:
 
 @dataclass
 class WeatherConfig:
-    base_url: str = "https://api.openweathermap.org/data/3.0/onecall/"
+    base_url: str = "https://api.openweathermap.org/data/2.5/"
     api_key: str = ""
     implementation: str = "openweathermap"
     units: str = "metric"
@@ -27,9 +27,7 @@ class WeatherConfig:
     @staticmethod
     def from_dict(data: dict[str, Any]) -> "WeatherConfig":
         return WeatherConfig(
-            base_url=data.get(
-                "base_url", "https://api.openweathermap.org/data/3.0/onecall/"
-            ),
+            base_url=data.get("base_url", "https://api.openweathermap.org/data/2.5/"),
             api_key=data.get("api_key", ""),
             implementation=data.get("implementation", "openweathermap"),
             units=data.get("units", "metric"),

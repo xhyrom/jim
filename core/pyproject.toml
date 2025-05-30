@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Jozef Steinhübl", email = "contact@xhyrom.dev"},
 ]
-dependencies = ["fastapi>=0.115.11", "uvicorn>=0.34.0", "tomli>=2.2.1"]
+dependencies = ["fastapi>=0.115.11", "uvicorn>=0.34.0", "tomli>=2.2.1", "aiohttp>=3.12.4"]
 requires-python = "==3.11.*"
 readme = "README.md"
 license = {text = "Apache License 2.0"}
