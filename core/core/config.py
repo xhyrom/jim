@@ -50,10 +50,39 @@ class GeocodingConfig:
 
 
 @dataclass
+class LLMConfig:
+    enabled: bool = True
+    provider: str = "mock"
+    fallback_threshold: float = 0.6
+    system_prompt: str = ""
+    models: dict[str, dict[str, Any]] = field(
+        default_factory=lambda: {
+            "openai": {"api_key": "", "model": "gpt-3.5-turbo", "base_url": ""},
+            "anthropic": {"api_key": "", "model": "claude-instant-1"},
+            "gemini": {"api_key": "", "model": "gemini-pro"},
+            "ollama": {"base_url": "http://localhost:11434", "model": "llama3"},
+            "mock": {"max_tokens": 50},
+        }
+    )
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> "LLMConfig":
+        models = data.get("models", {})
+        return LLMConfig(
+            enabled=data.get("enabled", True),
+            provider=data.get("provider", "mock"),
+            fallback_threshold=data.get("fallback_threshold", 0.6),
+            system_prompt=data.get("system_prompt", ""),
+            models=models,
+        )
+
+
+@dataclass
 class AppConfig:
     server: ServerConfig = field(default_factory=ServerConfig)
     weather: WeatherConfig = field(default_factory=WeatherConfig)
     geocoding: GeocodingConfig = field(default_factory=GeocodingConfig)
+    llm: LLMConfig = field(default_factory=LLMConfig)
     debug: bool = False
 
     @staticmethod
@@ -73,5 +102,6 @@ class AppConfig:
             server=ServerConfig.from_dict(data.get("server", {})),
             weather=WeatherConfig.from_dict(data.get("weather", {})),
             geocoding=GeocodingConfig.from_dict(data.get("geocoding", {})),
+            llm=LLMConfig.from_dict(data.get("llm", {})),
             debug=data.get("debug", False),
         )

@@ -49,6 +49,38 @@ class HandlerRegistry:
         self, result: Dict[str, Any], user_id: str, device_id: str, config: Any
     ) -> Dict[str, Any]:
         intent_name = result.get("intent")
+        confidence = result.get("confidence", 0.0)
+
+        should_use_fallback = False
+        if config.llm.enabled:
+            if intent_name == "fallback" or confidence < config.llm.fallback_threshold:
+                should_use_fallback = True
+
+        if should_use_fallback:
+            from ..skills.fallback import llm_fallback
+
+            try:
+                fallback_result = await llm_fallback(
+                    entities=result.get("entities", {}),
+                    user_id=user_id,
+                    device_id=device_id,
+                    config=config,
+                    text=result.get("text", ""),
+                    intent=intent_name,
+                    confidence=confidence,
+                )
+
+                if "data" in fallback_result and "response" in fallback_result["data"]:
+                    return {
+                        "intent": "llm_fallback",
+                        "confidence": 1.0,
+                        "response": fallback_result["data"]["response"],
+                        "action": fallback_result.get("action"),
+                        "fallback_data": fallback_result.get("data", {}),
+                    }
+            except Exception as e:
+                print(f"Error executing LLM fallback handler: {e}")
+
         handler = self.get_handler(intent_name)
 
         if not handler:
