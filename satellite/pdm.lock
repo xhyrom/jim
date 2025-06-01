@@ -5,10 +5,123 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:8a07e8b1429157a1bf76f72e8043a614dfa605f2444f7c9384be6eae2dbaaa98"
+content_hash = "sha256:a32d841ce08bdb6346696202e474803bc8357b097d5977331be36ff3ff0bb51b"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
+
+[[package]]
+name = "adafruit-blinka"
+version = "8.58.1"
+requires_python = ">=3.7.0"
+summary = "CircuitPython APIs for non-CircuitPython versions of Python such as CPython on Linux and MicroPython."
+groups = ["default"]
+dependencies = [
+    "Adafruit-PlatformDetect>=3.70.1",
+    "Adafruit-PureIO>=1.1.7",
+    "adafruit-circuitpython-typing",
+    "binho-host-adapter>=0.1.6",
+    "pyftdi>=0.40.0",
+    "sysv-ipc>=1.1.0; sys_platform == \"linux\" and platform_machine != \"mips\"",
+    "toml>=0.10.2; python_version < \"3.11\"",
+]
+files = [
+    {file = "adafruit_blinka-8.58.1-py3-none-any.whl", hash = "sha256:e685474308d8c9111f4d492113d67a0c808f83c712ba3f2dc7895df782e00355"},
+    {file = "adafruit_blinka-8.58.1.tar.gz", hash = "sha256:d26dde6b59747aba1944b2ac9db58f97bb8ca891eddacf90deacd9b4aba1190c"},
+]
+
+[[package]]
+name = "adafruit-circuitpython-bitbangio"
+version = "1.3.18"
+summary = "A library for adding bitbang I2C and SPI to CircuitPython without the built-in bitbangio module"
+groups = ["default"]
+dependencies = [
+    "Adafruit-Blinka",
+    "typing-extensions~=4.0",
+]
+files = [
+    {file = "adafruit_circuitpython_bitbangio-1.3.18-py3-none-any.whl", hash = "sha256:718b8e385b2d1b6d0aed9ea5633af199e30a450c1cfc0ca5d9662ca82cdedca8"},
+    {file = "adafruit_circuitpython_bitbangio-1.3.18.tar.gz", hash = "sha256:5fead01c8be203054b48359cc2e2d73bb61d3ef950c5a9cafd7781996b731ea7"},
+]
+
+[[package]]
+name = "adafruit-circuitpython-busdevice"
+version = "5.2.12"
+summary = "CircuitPython bus device classes to manage bus sharing."
+groups = ["default"]
+dependencies = [
+    "Adafruit-Blinka>=7.0.0",
+    "adafruit-circuitpython-typing",
+]
+files = [
+    {file = "adafruit_circuitpython_busdevice-5.2.12-py3-none-any.whl", hash = "sha256:998db37953d522c241240adab066be2df3e320921b03a11fef63f83b4a0b53c6"},
+    {file = "adafruit_circuitpython_busdevice-5.2.12.tar.gz", hash = "sha256:61d85ce691f4336f867cdcfa741550422e9df86be880b1b6145d29273de77ff3"},
+]
+
+[[package]]
+name = "adafruit-circuitpython-connectionmanager"
+version = "3.1.4"
+summary = "A urllib3.poolmanager/urllib3.connectionpool-like library for managing sockets and connections"
+groups = []
+dependencies = [
+    "Adafruit-Blinka",
+]
+files = [
+    {file = "adafruit_circuitpython_connectionmanager-3.1.4-py3-none-any.whl", hash = "sha256:3b2434edd07c1efed96c799c7883163aa2641823a8609dda77fd8fb4ae3602ca"},
+    {file = "adafruit_circuitpython_connectionmanager-3.1.4.tar.gz", hash = "sha256:b9b3d79a243abee9dd1ddfd0b4d1a7e658635dcd728ba05e00131d9bffdffa8e"},
+]
+
+[[package]]
+name = "adafruit-circuitpython-requests"
+version = "4.1.11"
+summary = "A requests-like library for web interfacing"
+groups = []
+dependencies = [
+    "Adafruit-Blinka",
+    "Adafruit-Circuitpython-ConnectionManager",
+]
+files = [
+    {file = "adafruit_circuitpython_requests-4.1.11-py3-none-any.whl", hash = "sha256:db38a4074de321899000990cec59d54581262ecfdfe127c00859f5929a815702"},
+    {file = "adafruit_circuitpython_requests-4.1.11.tar.gz", hash = "sha256:02bc798c37f93a3141854e76307a927394ab94b0a72a82314ef18943da236b04"},
+]
+
+[[package]]
+name = "adafruit-circuitpython-typing"
+version = "1.12.1"
+requires_python = ">=3.8"
+summary = "Types needed for type annotation that are not in `typing`"
+groups = ["default"]
+dependencies = [
+    "Adafruit-Blinka",
+    "adafruit-circuitpython-busdevice",
+    "adafruit-circuitpython-requests",
+    "typing-extensions~=4.0",
+]
+files = [
+    {file = "adafruit_circuitpython_typing-1.12.1-py3-none-any.whl", hash = "sha256:f1e511f48a76cb4467050db9334fed6761cc1f05921e9edddce7fd3a0b69b459"},
+    {file = "adafruit_circuitpython_typing-1.12.1.tar.gz", hash = "sha256:e4b06e07cb385dc098574f2479cd77d07e0a06987c814eab33b9f525ac83a935"},
+]
+
+[[package]]
+name = "adafruit-platformdetect"
+version = "3.79.0"
+summary = "Platform detection for use by libraries like Adafruit-Blinka."
+groups = ["default"]
+files = [
+    {file = "adafruit_platformdetect-3.79.0-py3-none-any.whl", hash = "sha256:10e4dccaa72c2a0fcb64eab1482b55857264d667ae5481963a20786948a44b72"},
+    {file = "adafruit_platformdetect-3.79.0.tar.gz", hash = "sha256:13f522c4ab92441600c3f47fd795b1610a646034922ecd2cbc1e207c64c3cf7f"},
+]
+
+[[package]]
+name = "adafruit-pureio"
+version = "1.1.11"
+requires_python = ">=3.5.0"
+summary = "Pure python (i.e. no native extensions) access to Linux IO    including I2C and SPI. Drop in replacement for smbus and spidev modules."
+groups = ["default"]
+files = [
+    {file = "Adafruit_PureIO-1.1.11-py3-none-any.whl", hash = "sha256:281ab2099372cc0decc26326918996cbf21b8eed694ec4764d51eefa029d324e"},
+    {file = "Adafruit_PureIO-1.1.11.tar.gz", hash = "sha256:c4cfbb365731942d1f1092a116f47dfdae0aef18c5b27f1072b5824ad5ea8c7c"},
+]
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -72,6 +185,21 @@ files = [
 ]
 
 [[package]]
+name = "apa102-pi"
+version = "2.5.3"
+requires_python = ">3"
+summary = "Driver for APA102 LEDs on a Raspberry Pi"
+groups = ["default"]
+dependencies = [
+    "adafruit-circuitpython-bitbangio",
+    "adafruit-circuitpython-busdevice",
+]
+files = [
+    {file = "apa102_pi-2.5.3-py3-none-any.whl", hash = "sha256:2fbf9b68ca20b568d0cf28216a71a1c2015e24259a80710eda18c43dc034c06d"},
+    {file = "apa102_pi-2.5.3.tar.gz", hash = "sha256:6e6a937d94531a4da83c8a7a401599611ccb9994827fe655fffb4fd89d31266a"},
+]
+
+[[package]]
 name = "attrs"
 version = "25.3.0"
 requires_python = ">=3.8"
@@ -96,6 +224,19 @@ files = [
     {file = "av-14.1.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:249b8104fbd7671a0f4c67e168ad92fbb3e2695a55b25015f33e8f7031efc0a4"},
     {file = "av-14.1.0-cp311-cp311-win_amd64.whl", hash = "sha256:242a2ce86be8c6d34538ce987c3acc742b69205422850d8091bc640d4adf4aa9"},
     {file = "av-14.1.0.tar.gz", hash = "sha256:81a0185af0237016049c2b1560d51d5895ef56763ea7ebab939baa7b6b87e6f7"},
+]
+
+[[package]]
+name = "binho-host-adapter"
+version = "0.1.6"
+summary = "Python Libraries for Binho Multi-Protocol USB Host Adapters"
+groups = ["default"]
+dependencies = [
+    "pyserial",
+]
+files = [
+    {file = "binho-host-adapter-0.1.6.tar.gz", hash = "sha256:1e6da7a84e208c13b5f489066f05774bff1d593d0f5bf1ca149c2b8e83eae856"},
+    {file = "binho_host_adapter-0.1.6-py3-none-any.whl", hash = "sha256:f71ca176c1e2fc1a5dce128beb286da217555c6c7c805f2ed282a6f3507ec277"},
 ]
 
 [[package]]
@@ -383,20 +524,22 @@ files = [
 
 [[package]]
 name = "numpy"
-version = "1.26.4"
-requires_python = ">=3.9"
+version = "2.2.6"
+requires_python = ">=3.10"
 summary = "Fundamental package for array computing in Python"
 groups = ["default"]
 files = [
-    {file = "numpy-1.26.4-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:4c66707fabe114439db9068ee468c26bbdf909cac0fb58686a42a24de1760c71"},
-    {file = "numpy-1.26.4-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:edd8b5fe47dab091176d21bb6de568acdd906d1887a4584a15a9a96a1dca06ef"},
-    {file = "numpy-1.26.4-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7ab55401287bfec946ced39700c053796e7cc0e3acbef09993a9ad2adba6ca6e"},
-    {file = "numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:666dbfb6ec68962c033a450943ded891bed2d54e6755e35e5835d63f4f6931d5"},
-    {file = "numpy-1.26.4-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:96ff0b2ad353d8f990b63294c8986f1ec3cb19d749234014f4e7eb0112ceba5a"},
-    {file = "numpy-1.26.4-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:60dedbb91afcbfdc9bc0b1f3f402804070deed7392c23eb7a7f07fa857868e8a"},
-    {file = "numpy-1.26.4-cp311-cp311-win32.whl", hash = "sha256:1af303d6b2210eb850fcf03064d364652b7120803a0b872f5211f5234b399f20"},
-    {file = "numpy-1.26.4-cp311-cp311-win_amd64.whl", hash = "sha256:cd25bcecc4974d09257ffcd1f098ee778f7834c3ad767fe5db785be9a4aa9cb2"},
-    {file = "numpy-1.26.4.tar.gz", hash = "sha256:2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010"},
+    {file = "numpy-2.2.6-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:f9f1adb22318e121c5c69a09142811a201ef17ab257a1e66ca3025065b7f53ae"},
+    {file = "numpy-2.2.6-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c820a93b0255bc360f53eca31a0e676fd1101f673dda8da93454a12e23fc5f7a"},
+    {file = "numpy-2.2.6-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:3d70692235e759f260c3d837193090014aebdf026dfd167834bcba43e30c2a42"},
+    {file = "numpy-2.2.6-cp311-cp311-macosx_14_0_x86_64.whl", hash = "sha256:481b49095335f8eed42e39e8041327c05b0f6f4780488f61286ed3c01368d491"},
+    {file = "numpy-2.2.6-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b64d8d4d17135e00c8e346e0a738deb17e754230d7e0810ac5012750bbd85a5a"},
+    {file = "numpy-2.2.6-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ba10f8411898fc418a521833e014a77d3ca01c15b0c6cdcce6a0d2897e6dbbdf"},
+    {file = "numpy-2.2.6-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:bd48227a919f1bafbdda0583705e547892342c26fb127219d60a5c36882609d1"},
+    {file = "numpy-2.2.6-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:9551a499bf125c1d4f9e250377c1ee2eddd02e01eac6644c080162c0c51778ab"},
+    {file = "numpy-2.2.6-cp311-cp311-win32.whl", hash = "sha256:0678000bb9ac1475cd454c6b8c799206af8107e310843532b04d49649c717a47"},
+    {file = "numpy-2.2.6-cp311-cp311-win_amd64.whl", hash = "sha256:e8213002e427c69c45a52bbd94163084025f533a55a59d6f9c5b820774ef3303"},
+    {file = "numpy-2.2.6.tar.gz", hash = "sha256:e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd"},
 ]
 
 [[package]]
@@ -542,6 +685,20 @@ files = [
 ]
 
 [[package]]
+name = "pyftdi"
+version = "0.56.0"
+requires_python = ">=3.9"
+summary = "FTDI device driver (pure Python)"
+groups = ["default"]
+dependencies = [
+    "pyserial>=3.0",
+    "pyusb!=1.2.0,>=1.0.0",
+]
+files = [
+    {file = "pyftdi-0.56.0-py3-none-any.whl", hash = "sha256:3ef0baadbf9031dde9d623ae66fac2d16ded36ce1b66c17765ca1944cb38b8b0"},
+]
+
+[[package]]
 name = "pyreadline3"
 version = "3.5.4"
 requires_python = ">=3.8"
@@ -551,6 +708,27 @@ marker = "sys_platform == \"win32\" and python_version >= \"3.8\""
 files = [
     {file = "pyreadline3-3.5.4-py3-none-any.whl", hash = "sha256:eaf8e6cc3c49bcccf145fc6067ba8643d1df34d604a1ec0eccbf7a18e6d3fae6"},
     {file = "pyreadline3-3.5.4.tar.gz", hash = "sha256:8d57d53039a1c75adba8e50dd3d992b28143480816187ea5efbd5c78e6c885b7"},
+]
+
+[[package]]
+name = "pyserial"
+version = "3.5"
+summary = "Python Serial Port Extension"
+groups = ["default"]
+files = [
+    {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
+    {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+
+[[package]]
+name = "pyusb"
+version = "1.3.1"
+requires_python = ">=3.9.0"
+summary = "Easy USB access for Python"
+groups = ["default"]
+files = [
+    {file = "pyusb-1.3.1-py3-none-any.whl", hash = "sha256:bf9b754557af4717fe80c2b07cc2b923a9151f5c08d17bdb5345dac09d6a0430"},
+    {file = "pyusb-1.3.1.tar.gz", hash = "sha256:3af070b607467c1c164f49d5b0caabe8ac78dbed9298d703a8dbf9df4052d17e"},
 ]
 
 [[package]]
@@ -680,6 +858,16 @@ dependencies = [
 files = [
     {file = "sympy-1.13.3-py3-none-any.whl", hash = "sha256:54612cf55a62755ee71824ce692986f23c88ffa77207b30c1368eda4a7060f73"},
     {file = "sympy-1.13.3.tar.gz", hash = "sha256:b27fd2c6530e0ab39e275fc9b683895367e51d5da91baa8d3d64db2565fec4d9"},
+]
+
+[[package]]
+name = "sysv-ipc"
+version = "1.1.0"
+summary = "System V IPC primitives (semaphores, shared memory and message queues) for Python"
+groups = ["default"]
+marker = "sys_platform == \"linux\" and platform_machine != \"mips\""
+files = [
+    {file = "sysv_ipc-1.1.0.tar.gz", hash = "sha256:0f063cbd36ec232032e425769ebc871f195a7d183b9af32f9901589ea7129ac3"},
 ]
 
 [[package]]
