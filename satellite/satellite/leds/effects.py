@@ -21,7 +21,7 @@ class LanternEffects:
         controller.set_pixels(colors)
 
     @staticmethod
-    def lantern_glow(
+    def always_on(
         controller: LEDController,
         base_color: Tuple[int, int, int],
         should_stop: Callable[[], bool],
