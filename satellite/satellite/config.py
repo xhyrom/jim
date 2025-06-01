@@ -113,8 +113,6 @@ class LEDDriverType(Enum):
 
 @dataclass
 class LEDSchedule:
-    """Schedule for when LEDs should be active"""
-
     enabled: bool = True
     start_hour: int = 7  # 7 AM
     end_hour: int = 22  # 10 PM
@@ -124,8 +122,8 @@ class LEDSchedule:
 class LEDConfig:
     driver_type: LEDDriverType = LEDDriverType.AUTO
     num_leds: int = 3
-    brightness: int = 10  # For APA102, 0-31
-    base_color: tuple[int, int, int] = (255, 140, 20)  # Default Minecraft lantern color
+    brightness: int = 10
+    base_color: tuple[int, int, int] = (255, 80, 0)
     schedule: LEDSchedule = field(default_factory=LEDSchedule)
 
     @staticmethod
@@ -137,7 +135,7 @@ class LEDConfig:
             end_hour=schedule_data.get("end_hour", 22),
         )
 
-        color = data.get("base_color", (255, 140, 20))
+        color = data.get("base_color", (255, 80, 0))
         if isinstance(color, str):
             if color.startswith("#") and len(color) == 7:
                 try:
