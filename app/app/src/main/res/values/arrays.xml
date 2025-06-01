@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="asr_types">
+        <item>WHISPER</item>
+        <item>GOOGLE</item>
+        <item>VOSK</item>
+    </string-array>
+    
+    <string-array name="tts_types">
+        <item>PIPER</item>
+    </string-array>
+    
+    <string-array name="led_driver_types">
+        <item>AUTO</item>
+        <item>APA102</item>
+        <item>NEOPIXEL</item>
+        <item>MOCK</item>
+    </string-array>
+</resources>

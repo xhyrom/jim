@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Terminal colors -->
+    <color name="terminal_background">#1E1E1E</color>
+    <color name="terminal_text">#E0E0E0</color>
+    <color name="terminal_prompt">#00FF00</color>
+    <color name="terminal_hint">#808080</color>
 </resources>
