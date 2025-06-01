@@ -1,16 +1,15 @@
 from enum import Enum, auto
 from pathlib import Path
 
-from .debug import sneaky_throws
-
-from .config import Config
-
 from .asr.asr import AutomaticSpeechRecognitionService
+from .config import Config
+from .core.client import CoreClient
+from .debug import sneaky_throws
+from .leds import initialize_lantern
 from .microphone import MicrophoneInput
 from .speaker import SpeakerOutput
 from .tts.tts import TextToSpeechService
 from .wake import WakeService
-from .core.client import CoreClient
 
 
 class State(Enum):
@@ -37,6 +36,8 @@ class Satellite:
         self.state = State.OFF
         self.config = config
 
+        self.lantern = initialize_lantern(config.led)
+
         self.microphone = MicrophoneInput()
         self.speaker = SpeakerOutput()
 
@@ -51,19 +52,24 @@ class Satellite:
     @sneaky_throws
     async def run(self) -> None:
         self.state = State.IDLE
+        self.lantern.lantern_glow()
 
         while True:
             if not self.wake_service.run(self.microphone):
                 pass
 
+            self.lantern.wakeup()
+
             self.state = State.LISTENING
 
             print("Listening...")
             transcription = self.asr_service.run(self.microphone)
+            self.lantern.listen()
 
             print("Heard:", transcription)
 
             self.state = State.THINKING
+            self.lantern.think()
 
             response = await self.core_client.ask(transcription)
 
@@ -79,8 +85,10 @@ class Satellite:
                 )
 
             self.state = State.SPEAKING
+            self.lantern.speak()
 
             for audio in self.tts_service.synthesize(response_text):
                 self.speaker.play_audio(audio)
 
             self.state = State.IDLE
+            self.lantern.lantern_glow()

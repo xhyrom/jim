@@ -11,7 +11,6 @@ from .asr.whisper import WhisperService
 from .tts.piper import PiperService
 from .tts.tts import TextToSpeechService
 
-
 _DIR = Path(__file__).parent
 _MODELS_DIR = _DIR / ".." / ".." / "models"
 
@@ -105,12 +104,66 @@ class CoreConfig:
         )
 
 
+class LEDDriverType(Enum):
+    AUTO = auto()
+    APA102 = auto()
+    NEOPIXEL = auto()
+    MOCK = auto()
+
+
+@dataclass
+class LEDSchedule:
+    """Schedule for when LEDs should be active"""
+
+    enabled: bool = True
+    start_hour: int = 7  # 7 AM
+    end_hour: int = 22  # 10 PM
+
+
+@dataclass
+class LEDConfig:
+    driver_type: LEDDriverType = LEDDriverType.AUTO
+    num_leds: int = 3
+    brightness: int = 10  # For APA102, 0-31
+    base_color: tuple[int, int, int] = (255, 140, 20)  # Default Minecraft lantern color
+    schedule: LEDSchedule = field(default_factory=LEDSchedule)
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> "LEDConfig":
+        schedule_data = data.get("schedule", {})
+        schedule = LEDSchedule(
+            enabled=schedule_data.get("enabled", True),
+            start_hour=schedule_data.get("start_hour", 7),
+            end_hour=schedule_data.get("end_hour", 22),
+        )
+
+        color = data.get("base_color", (255, 140, 20))
+        if isinstance(color, str):
+            if color.startswith("#") and len(color) == 7:
+                try:
+                    r = int(color[1:3], 16)
+                    g = int(color[3:5], 16)
+                    b = int(color[5:7], 16)
+                    color = (r, g, b)
+                except ValueError:
+                    pass
+
+        return LEDConfig(
+            driver_type=LEDDriverType[data.get("driver_type", "AUTO").upper()],
+            num_leds=data.get("num_leds", 3),
+            brightness=data.get("brightness", 10),
+            base_color=color,
+            schedule=schedule,
+        )
+
+
 @dataclass
 class Config:
     asr: ASRConfig = field(default_factory=ASRConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
     wake: WakeConfig = field(default_factory=WakeConfig)
     core: CoreConfig = field(default_factory=CoreConfig)
+    led: LEDConfig = field(default_factory=LEDConfig)
 
     @staticmethod
     def from_file(path: Path) -> "Config":
@@ -128,4 +181,5 @@ class Config:
             asr=ASRConfig.from_dict(data["asr"]) if "asr" in data else ASRConfig(),
             tts=TTSConfig.from_dict(data["tts"]) if "tts" in data else TTSConfig(),
             wake=WakeConfig.from_dict(data["wake"]) if "wake" in data else WakeConfig(),
+            led=LEDConfig.from_dict(data["led"]) if "led" in data else LEDConfig(),
         )
