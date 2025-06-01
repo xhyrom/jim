@@ -52,7 +52,7 @@ class Satellite:
     @sneaky_throws
     async def run(self) -> None:
         self.state = State.IDLE
-        self.lantern.lantern_glow()
+        self.lantern.always_on()
 
         while True:
             if not self.wake_service.run(self.microphone):
@@ -91,4 +91,4 @@ class Satellite:
                 self.speaker.play_audio(audio)
 
             self.state = State.IDLE
-            self.lantern.lantern_glow()
+            self.lantern.always_on()

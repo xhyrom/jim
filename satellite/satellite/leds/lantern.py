@@ -21,14 +21,12 @@ class MinecraftLantern:
 
         self._next = threading.Event()
         self._queue = Queue.Queue()
+        self._current_effect = None
         self._thread = threading.Thread(target=self._run)
         self._thread.daemon = True
         self._thread.start()
 
-        if self._is_active_time():
-            self.always_on()
-        else:
-            self.off()
+        self.always_on()
 
     def _create_controller(self) -> LEDController:
         if self._config.driver_type == LEDDriverType.AUTO:
@@ -73,32 +71,42 @@ class MinecraftLantern:
             return current_hour >= start or current_hour < end
 
     def always_on(self) -> None:
-        if not self._is_active_time():
-            self.off()
-            return
-
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._always_on)
+        self._next.set()
 
     def wakeup(self) -> None:
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._wakeup)
+        self._next.set()
 
     def listen(self) -> None:
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._listen)
+        self._next.set()
 
     def think(self) -> None:
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._think)
+        self._next.set()
 
     def speak(self) -> None:
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._speak)
+        self._next.set()
 
     def off(self) -> None:
-        self._next.set()
+        self._clear_queue()
         self._queue.put(self._off)
+        self._next.set()
+
+    def _clear_queue(self) -> None:
+        try:
+            while True:
+                self._queue.get_nowait()
+                self._queue.task_done()
+        except Queue.Empty:
+            pass
 
     def cleanup(self) -> None:
         self.off()
@@ -106,36 +114,45 @@ class MinecraftLantern:
 
     def _run(self) -> None:
         while True:
-            func = self._queue.get()
             try:
-                func()
+                func = self._queue.get()
+                self._current_effect = func.__name__
+
+                self._next.clear()
+
+                try:
+                    func()
+                except Exception as e:
+                    logger.error(f"Error in LED effect {func.__name__}: {e}")
+                finally:
+                    self._queue.task_done()
+                    self._current_effect = None
             except Exception as e:
-                logger.error(f"Error in LED effect: {e}")
+                logger.error(f"Error in LED thread: {e}")
 
     def _always_on(self) -> None:
-        self._next.clear()
+        if not self._is_active_time():
+            LanternEffects.fade_off(self._controller, self._base_color)
+            return
+
         LanternEffects.always_on(
             self._controller, self._base_color, should_stop=lambda: self._next.is_set()
         )
 
     def _wakeup(self) -> None:
         LanternEffects.wakeup(self._controller, self._base_color)
-        self._always_on()
 
     def _listen(self) -> None:
-        self._next.clear()
         LanternEffects.listen(
             self._controller, self._base_color, should_stop=lambda: self._next.is_set()
         )
 
     def _think(self) -> None:
-        self._next.clear()
         LanternEffects.think(
             self._controller, self._base_color, should_stop=lambda: self._next.is_set()
         )
 
     def _speak(self) -> None:
-        self._next.clear()
         LanternEffects.speak(
             self._controller, self._base_color, should_stop=lambda: self._next.is_set()
         )
