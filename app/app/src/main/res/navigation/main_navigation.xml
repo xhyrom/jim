@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="dev.xhyrom.jim.ui.home.HomeFragment"
+        android:label="Satellites"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_addSatelliteFragment"
+            app:destination="@id/addSatelliteFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_satelliteDetailFragment"
+            app:destination="@id/satelliteDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addSatelliteFragment"
+        android:name="dev.xhyrom.jim.ui.satellite.AddSatelliteFragment"
+        android:label="Add Satellite"
+        tools:layout="@layout/fragment_add_edit_satellite" />
+
+    <fragment
+        android:id="@+id/satelliteDetailFragment"
+        android:name="dev.xhyrom.jim.ui.satellite.SatelliteDetailFragment"
+        android:label="Satellite Details"
+        tools:layout="@layout/fragment_satellite_detail">
+        <argument
+            android:name="satelliteId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_satelliteDetailFragment_to_editSatelliteFragment"
+            app:destination="@id/editSatelliteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editSatelliteFragment"
+        android:name="dev.xhyrom.jim.ui.satellite.EditSatelliteFragment"
+        android:label="Edit Satellite"
+        tools:layout="@layout/fragment_add_edit_satellite">
+        <argument
+            android:name="satelliteId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.xhyrom.jim.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+        
+    <fragment
+        android:id="@+id/logsFragment"
+        android:name="dev.xhyrom.jim.ui.logs.LogsFragment"
+        android:label="Logs"
+        tools:layout="@layout/fragment_logs" />
+</navigation>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageSatelliteIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/device_satellite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/purple_500" />
+
+        <TextView
+            android:id="@+id/textSatelliteName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintEnd_toStartOf="@+id/connectionStatus"
+            app:layout_constraintStart_toEndOf="@+id/imageSatelliteIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Living Room Assistant" />
+
+        <ImageView
+            android:id="@+id/connectionStatus"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_connected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textSatelliteName"
+            app:layout_constraintBottom_toBottomOf="@+id/textSatelliteName" />
+
+        <TextView
+            android:id="@+id/textSatelliteIp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageSatelliteIcon"
+            app:layout_constraintTop_toBottomOf="@+id/textSatelliteName"
+            tools:text="192.168.1.101" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
