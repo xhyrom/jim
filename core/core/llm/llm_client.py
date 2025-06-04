@@ -1,13 +1,13 @@
 from typing import Any, Dict, List, Optional
 
 from ..config import LLMConfig
-from .providers import get_provider
+from .providers.base import ProviderRegistry
 
 
 class LLMClient:
     def __init__(self, config: LLMConfig):
         self.config = config
-        self.provider = get_provider(config)
+        self.provider = self._get_provider(config)
         self.conversation_history = {}
 
     async def get_response(
@@ -84,3 +84,21 @@ class LLMClient:
     def clear_conversation_history(self, user_id: str = "default") -> None:
         if user_id in self.conversation_history:
             self.conversation_history[user_id] = []
+            
+    def _get_provider(self, config: LLMConfig):
+        """Get the appropriate LLM provider based on configuration"""
+        provider_name = config.provider
+        provider_config = config.models.get(provider_name, {})
+        
+        try:
+            return ProviderRegistry.get_provider(provider_name, **provider_config)
+        except ValueError as e:
+            print(f"Error getting provider '{provider_name}': {e}")
+            print(f"Falling back to mock provider")
+            # Fall back to mock provider if the requested one is not available
+            return ProviderRegistry.get_provider("mock")
+    
+    @staticmethod
+    def list_available_providers():
+        """Return a list of all available LLM providers"""
+        return ProviderRegistry.list_providers()

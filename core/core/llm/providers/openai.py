@@ -7,8 +7,6 @@ from .base import LLMProvider, ProviderRegistry
 
 @ProviderRegistry.register("openai")
 class OpenAIProvider(LLMProvider):
-    """OpenAI API provider using the official client library"""
-
     def __init__(self, **kwargs):
         self.api_key = kwargs.get("api_key", "")
         self.model = kwargs.get("model", "gpt-3.5-turbo")
@@ -26,7 +24,6 @@ class OpenAIProvider(LLMProvider):
         temperature: float = 0.7,
         **kwargs,
     ) -> Dict[str, Any]:
-        """Generate a response using OpenAI API"""
         if not self.api_key:
             raise ValueError("OpenAI API key not provided")
 

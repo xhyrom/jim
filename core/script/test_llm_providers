@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+
+"""
+Test script for LLM providers in the Flyn core.
+This script can be used to test different LLM providers with simple prompts.
+"""
+
+import argparse
+import asyncio
+import sys
+from pathlib import Path
+from typing import Optional
+
+root_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(root_dir))
+
+from core.config import AppConfig
+from core.llm.llm_client import LLMClient
+from core.llm.providers.base import ProviderRegistry
+
+
+async def test_provider(
+    provider_name: str,
+    config_file: Optional[Path] = None,
+    prompt: str = "What is the capital of France?",
+    model: Optional[str] = None,
+):
+    print(f"\n--- Testing {provider_name} provider ---")
+
+    # Load config
+    config = AppConfig.from_file(config_file) if config_file else AppConfig()
+
+    config.llm.provider = provider_name
+
+    if model and provider_name in config.llm.models:
+        config.llm.models[provider_name]["model"] = model
+
+    client = LLMClient(config.llm)
+
+    try:
+        print(f"Sending prompt: '{prompt}'")
+        response = await client.get_response(text=prompt, user_id="test_user")
+
+        print(f"Response: {response.get('response', 'No response')}")
+        print(f"Success: {response.get('success', False)}")
+        if "error" in response:
+            print(f"Error: {response.get('error')}")
+    except Exception as e:
+        print(f"Error testing {provider_name}: {e}")
+
+
+async def list_providers():
+    """List all available providers"""
+    providers = ProviderRegistry.list_providers()
+    print("\nAvailable LLM providers:")
+    for provider in providers:
+        print(f"- {provider}")
+
+
+async def main():
+    parser = argparse.ArgumentParser(description="Test LLM providers")
+    parser.add_argument(
+        "--provider",
+        help="Provider to test (e.g., ollama, huggingface, bitnet, openai, gemini, mock)",
+    )
+    parser.add_argument(
+        "--config", type=Path, help="Path to config file (default: config.toml)"
+    )
+    parser.add_argument(
+        "--prompt",
+        default="What is the capital of France?",
+        help="Prompt to send to the LLM",
+    )
+    parser.add_argument(
+        "--model", help="Override the model to use (e.g., llama3, llama3:latest)"
+    )
+    parser.add_argument(
+        "--list", action="store_true", help="List all available providers"
+    )
+
+    args = parser.parse_args()
+
+    if args.list:
+        await list_providers()
+        return
+
+    if not args.provider:
+        print("Please specify a provider to test with --provider")
+        await list_providers()
+        return
+
+    config_path = args.config or Path(__file__).parent.parent / "config.toml"
+
+    await test_provider(
+        provider_name=args.provider,
+        config_file=config_path if config_path.exists() else None,
+        prompt=args.prompt,
+        model=args.model,
+    )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
