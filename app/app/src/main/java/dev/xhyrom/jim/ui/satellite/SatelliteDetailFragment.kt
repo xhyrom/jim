@@ -11,11 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.xhyrom.jim.api.SystemInfo
 import dev.xhyrom.jim.data.database.AppDatabase
 import dev.xhyrom.jim.data.repository.SatelliteRepository
 import dev.xhyrom.jim.databinding.FragmentSatelliteDetailBinding
 import dev.xhyrom.jim.ui.terminal.SftpBrowserActivity
 import dev.xhyrom.jim.ui.terminal.TerminalActivity
+import java.text.DecimalFormat
 
 class SatelliteDetailFragment : Fragment() {
     private var _binding: FragmentSatelliteDetailBinding? = null
@@ -48,6 +50,13 @@ class SatelliteDetailFragment : Fragment() {
 
         setupObservers()
         setupClickListeners()
+        
+        // Check API status after loading satellite
+        viewModel.selectedSatellite.observe(viewLifecycleOwner) { satellite ->
+            if (satellite != null) {
+                viewModel.checkApiStatus()
+            }
+        }
     }
 
     private fun setupObservers() {
@@ -55,23 +64,67 @@ class SatelliteDetailFragment : Fragment() {
             if (satellite != null) {
                 binding.textSatelliteName.text = satellite.name
                 binding.textSatelliteIp.text = satellite.ipAddress
-                binding.textStatus.text = "Status: Online" // Simplified, ideally you'd check connectivity
             }
         }
 
         viewModel.isConnected.observe(viewLifecycleOwner) { isConnected ->
-            binding.textStatus.text = if (isConnected) "Status: Online" else "Status: Offline"
-            binding.textStatus.setTextColor(
-                resources.getColor(
-                    if (isConnected) android.R.color.holo_green_dark else android.R.color.holo_red_dark,
-                    null
-                )
-            )
+            updateConnectionStatus(isConnected)
+        }
+
+        viewModel.apiStatus.observe(viewLifecycleOwner) { apiConnected ->
+            if (apiConnected) {
+                binding.apiStatusBadge.visibility = View.VISIBLE
+                // Get system info when API is connected
+                viewModel.getSystemInfo()
+            } else {
+                binding.apiStatusBadge.visibility = View.GONE
+            }
+        }
+        
+        viewModel.satelliteStatus.observe(viewLifecycleOwner) { status ->
+            binding.textStatus.text = "Status: ${status.state}"
+            updateConnectionStatus(true)
+        }
+        
+        viewModel.systemInfo.observe(viewLifecycleOwner) { systemInfo ->
+            updateSystemInfo(systemInfo)
         }
 
         viewModel.operationResult.observe(viewLifecycleOwner) { result ->
             Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
         }
+    }
+    
+    private fun updateConnectionStatus(isConnected: Boolean) {
+        binding.textStatus.text = if (isConnected) "Status: Online" else "Status: Offline"
+        binding.textStatus.setTextColor(
+            resources.getColor(
+                if (isConnected) android.R.color.holo_green_dark else android.R.color.holo_red_dark,
+                null
+            )
+        )
+    }
+    
+    private fun updateSystemInfo(systemInfo: SystemInfo) {
+        val df = DecimalFormat("#.##")
+        
+        val memoryUsed = systemInfo.memory.total - systemInfo.memory.available
+        val memoryUsedMB = memoryUsed / (1024 * 1024)
+        val memoryTotalMB = systemInfo.memory.total / (1024 * 1024)
+        val memoryPercentage = df.format(systemInfo.memory.percent)
+        
+        val diskUsedGB = (systemInfo.disk.total - systemInfo.disk.free) / (1024 * 1024 * 1024)
+        val diskTotalGB = systemInfo.disk.total / (1024 * 1024 * 1024)
+        val diskPercentage = df.format(systemInfo.disk.percent)
+        
+        val systemInfoText = """
+            Platform: ${systemInfo.platform}
+            Memory: ${memoryUsedMB}MB / ${memoryTotalMB}MB (${memoryPercentage}%)
+            Disk: ${diskUsedGB}GB / ${diskTotalGB}GB (${diskPercentage}%)
+        """.trimIndent()
+        
+        binding.textSystemInfo.text = systemInfoText
+        binding.cardSystemInfo.visibility = View.VISIBLE
     }
 
     private fun setupClickListeners() {
@@ -114,6 +167,15 @@ class SatelliteDetailFragment : Fragment() {
                 .show()
         }
 
+        binding.buttonSendCommand.setOnClickListener {
+            showSendCommandDialog()
+        }
+
+        binding.buttonRefreshStatus.setOnClickListener {
+            viewModel.checkApiStatus()
+            viewModel.getSystemInfo()
+        }
+
         binding.buttonEditSatellite.setOnClickListener {
             viewModel.selectedSatellite.value?.let { satellite ->
                 val action = SatelliteDetailFragmentDirections.actionSatelliteDetailFragmentToEditSatelliteFragment(
@@ -136,6 +198,32 @@ class SatelliteDetailFragment : Fragment() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+    }
+    
+    private fun showSendCommandDialog() {
+        val editText = android.widget.EditText(requireContext()).apply {
+            hint = "Enter command text"
+            setSingleLine(false)
+            minLines = 2
+        }
+        
+        val container = android.widget.FrameLayout(requireContext()).apply {
+            val padding = resources.getDimensionPixelSize(android.R.dimen.app_icon_size) / 2
+            setPadding(padding, padding / 2, padding, padding / 2)
+            addView(editText)
+        }
+        
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Send Command")
+            .setView(container)
+            .setPositiveButton("Send") { _, _ ->
+                val commandText = editText.text.toString()
+                if (commandText.isNotEmpty()) {
+                    viewModel.sendCommand(commandText)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onDestroyView() {

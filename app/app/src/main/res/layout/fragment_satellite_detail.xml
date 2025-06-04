@@ -65,9 +65,24 @@
                     android:text="Status: Online"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textColor="@android:color/holo_green_dark"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/apiStatusBadge"
                     app:layout_constraintStart_toEndOf="@+id/imageSatellite"
                     app:layout_constraintTop_toBottomOf="@+id/textSatelliteIp" />
+                    
+                <TextView
+                    android:id="@+id/apiStatusBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_badge"
+                    android:padding="4dp"
+                    android:text="API"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/textStatus"
+                    app:layout_constraintTop_toTopOf="@+id/textStatus" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -124,7 +139,61 @@
                     android:drawableStart="@drawable/ic_restart"
                     android:drawablePadding="8dp"
                     android:gravity="start|center_vertical"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_marginBottom="8dp" />
+                    
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSendCommand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Send Command"
+                    android:drawableStart="@drawable/ic_send"
+                    android:drawablePadding="8dp"
+                    android:gravity="start|center_vertical"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonRefreshStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Refresh Status"
+                    android:drawableStart="@drawable/ic_refresh"
+                    android:drawablePadding="8dp"
+                    android:gravity="start|center_vertical"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardSystemInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/cardActions">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="System Information"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/textSystemInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:fontFamily="monospace" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -135,7 +204,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/cardActions">
+            app:layout_constraintTop_toBottomOf="@+id/cardSystemInfo">
 
             <LinearLayout
                 android:layout_width="match_parent"
