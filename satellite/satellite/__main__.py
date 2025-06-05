@@ -1,8 +1,8 @@
-from pathlib import Path
 import asyncio
+from pathlib import Path
 
-from .satellite import Satellite
 from .config import Config
+from .satellite import Satellite
 
 _DIR = Path(__file__).parent
 _CONFIG_PATH = _DIR / ".." / "config.json"
