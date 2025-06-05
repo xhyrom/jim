@@ -11,6 +11,7 @@ async def llm_fallback(entities: Dict[str, Any], **context) -> Dict[str, Any]:
 
     intent: llm_fallback
     """
+
     config = context.get("config")
     llm_config = config.llm
 
@@ -32,17 +33,16 @@ async def llm_fallback(entities: Dict[str, Any], **context) -> Dict[str, Any]:
 
         llm_provider = ProviderRegistry.get_provider(provider_name, **provider_config)
 
-        system_prompt = get_system_prompt(llm_config.system_prompt)
+        system_prompt = get_system_prompt(
+            detected_intent=detected_intent,
+            confidence=confidence,
+        )
 
         messages = [
             {"role": "system", "content": system_prompt},
             {
                 "role": "user",
-                "content": format_fallback_prompt(
-                    user_query=original_text,
-                    intent_confidence=confidence,
-                    detected_intent=detected_intent,
-                ),
+                "content": format_fallback_prompt(user_query=original_text),
             },
         ]
 

@@ -54,7 +54,6 @@ class LLMConfig:
     enabled: bool = True
     provider: str = "mock"
     fallback_threshold: float = 0.6
-    system_prompt: str = ""
     contexts: list[str] = field(default_factory=list)
     streaming: bool = False
     models: dict[str, dict[str, Any]] = field(
@@ -63,8 +62,18 @@ class LLMConfig:
             "anthropic": {"api_key": "", "model": "claude-instant-1"},
             "gemini": {"api_key": "", "model": "gemini-pro"},
             "ollama": {"base_url": "http://localhost:11434", "model": "llama3"},
-            "huggingface": {"api_key": "", "model": "meta-llama/Llama-2-7b-chat-hf", "base_url": ""},
-            "bitnet": {"api_key": "", "model": "microsoft/BitNet-b1.58-1.4B", "local": True, "device": "cuda", "use_hf": True},
+            "huggingface": {
+                "api_key": "",
+                "model": "meta-llama/Llama-2-7b-chat-hf",
+                "base_url": "",
+            },
+            "bitnet": {
+                "api_key": "",
+                "model": "microsoft/BitNet-b1.58-1.4B",
+                "local": True,
+                "device": "cuda",
+                "use_hf": True,
+            },
             "mock": {"max_tokens": 50},
         }
     )
@@ -76,7 +85,6 @@ class LLMConfig:
             enabled=data.get("enabled", True),
             provider=data.get("provider", "mock"),
             fallback_threshold=data.get("fallback_threshold", 0.6),
-            system_prompt=data.get("system_prompt", ""),
             contexts=data.get("contexts", []),
             streaming=data.get("streaming", False),
             models=models,

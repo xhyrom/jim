@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from google import genai
+from google.genai import types
 
 from .base import LLMProvider, ProviderRegistry
 
@@ -11,12 +12,13 @@ class GeminiProvider(LLMProvider):
 
     def __init__(self, **kwargs):
         self.api_key = kwargs.get("api_key", "")
-        self.model = kwargs.get("model", "gemini-pro")
+        self.model = kwargs.get("model", "gemini-2.5-flash")
+        self.client = None
 
         if not self.api_key:
             print("Warning: Gemini API key not provided")
         else:
-            genai.configure(api_key=self.api_key)
+            self.client = genai.Client(api_key=self.api_key)
 
     async def generate_response(
         self,
@@ -26,48 +28,49 @@ class GeminiProvider(LLMProvider):
         **kwargs,
     ) -> Dict[str, Any]:
         """Generate a response using Google Gemini API"""
-        if not self.api_key:
-            raise ValueError("Gemini API key not provided")
 
-        try:
-            gemini_messages = []
-
-            system_message = None
-            for msg in messages:
-                if msg["role"] == "user":
-                    gemini_messages.append(
-                        {"role": "user", "parts": [{"text": msg["content"]}]}
-                    )
-                elif msg["role"] == "assistant":
-                    gemini_messages.append(
-                        {"role": "model", "parts": [{"text": msg["content"]}]}
-                    )
-                elif msg["role"] == "system":
-                    system_message = msg["content"]
-
-            if system_message and gemini_messages:
-                gemini_messages.insert(
-                    0,
-                    {
-                        "role": "user",
-                        "parts": [{"text": f"System instruction: {system_message}"}],
-                    },
-                )
-
-            generation_config = {
-                "temperature": temperature,
-                "max_output_tokens": max_tokens,
-                "top_p": 0.95,
-                "top_k": 40,
-            }
-
-            model = genai.GenerativeModel(
-                model_name=self.model, generation_config=generation_config
+        if not self.api_key or not self.client:
+            raise ValueError(
+                "Gemini API key not provided or client initialization failed"
             )
 
-            chat = model.start_chat(history=gemini_messages)
+        try:
+            system_instruction = None
+            contents = []
 
-            response = await chat.send_message_async("")
+            for msg in messages:
+                if msg["role"] == "system":
+                    system_instruction = msg["content"]
+                elif msg["role"] == "user":
+                    contents.append(
+                        types.Content(
+                            role="user",
+                            parts=[types.Part.from_text(text=msg["content"])],
+                        )
+                    )
+                elif msg["role"] == "assistant":
+                    contents.append(
+                        types.Content(
+                            role="model",
+                            parts=[types.Part.from_text(text=msg["content"])],
+                        )
+                    )
+
+            config = types.GenerateContentConfig(
+                temperature=temperature,
+                max_output_tokens=max_tokens,
+                top_p=0.95,
+                top_k=40,
+            )
+
+            if system_instruction:
+                config.system_instruction = system_instruction
+
+            response = await self.client.aio.models.generate_content(
+                model=self.model,
+                contents=contents,
+                config=config,
+            )
 
             return {
                 "content": response.text,
