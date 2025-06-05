@@ -1,8 +1,8 @@
 from typing import Any, Dict, Optional
-from datetime import datetime
-import asyncio
-from .services import WeatherServiceRegistry
+
+from ...config import get_config
 from .geocoding import GeocodingService
+from .services import WeatherServiceRegistry
 
 
 async def get_weather_data(location_name: Optional[str], config: Any) -> Dict[str, Any]:
@@ -156,7 +156,6 @@ async def get_weather_data(location_name: Optional[str], config: Any) -> Dict[st
                 )
 
         temp_unit = "°F" if weather_config.units == "imperial" else "°C"
-        speed_unit = "mph" if weather_config.units == "imperial" else "km/h"
 
         feels_diff = ""
         if feels_like is not None and temp is not None:
@@ -193,6 +192,16 @@ async def get_weather_data(location_name: Optional[str], config: Any) -> Dict[st
     except Exception as e:
         print(f"Error getting weather data: {e}")
         return {"success": False, "error": str(e), "location": location_name}
+
+
+async def get_weather_by_location(location: str) -> Dict[str, Any]:
+    """Returns the current weather.
+
+    Args:
+      location: The city and state, e.g. San Francisco, CA
+    """
+
+    return await get_weather_data(location, get_config())
 
 
 async def get_weather(entities: Dict[str, Any], **context) -> Dict[str, Any]:

@@ -1,5 +1,6 @@
+from typing import Any, Dict, Optional
+
 import aiohttp
-from typing import Dict, Any, Optional, List, Tuple
 
 
 class GeocodingService:

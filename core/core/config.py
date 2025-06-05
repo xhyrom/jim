@@ -101,11 +101,14 @@ class AppConfig:
 
     @staticmethod
     def from_file(path: Path) -> "AppConfig":
+        global _config
+
         try:
             with open(path, "rb") as f:
                 data = tomli.load(f)
 
-            return AppConfig.from_dict(data)
+            _config = AppConfig.from_dict(data)
+            return _config
         except Exception as e:
             print(f"Error loading config: {e}")
             return AppConfig()
@@ -119,3 +122,10 @@ class AppConfig:
             llm=LLMConfig.from_dict(data.get("llm", {})),
             debug=data.get("debug", False),
         )
+
+
+_config: AppConfig = None
+
+
+def get_config() -> AppConfig:
+    return _config

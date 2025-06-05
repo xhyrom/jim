@@ -3,6 +3,7 @@ from typing import Any, Dict, List
 from google import genai
 from google.genai import types
 
+from ...skills.weather.handler import get_weather_by_location
 from .base import LLMProvider, ProviderRegistry
 
 
@@ -61,15 +62,14 @@ class GeminiProvider(LLMProvider):
                 max_output_tokens=max_tokens,
                 top_p=0.95,
                 top_k=40,
+                tools=[get_weather_by_location],
             )
 
             if system_instruction:
                 config.system_instruction = system_instruction
 
             response = await self.client.aio.models.generate_content(
-                model=self.model,
-                contents=contents,
-                config=config,
+                model=self.model, contents=contents, config=config
             )
 
             return {
