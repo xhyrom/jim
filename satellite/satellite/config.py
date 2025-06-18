@@ -122,7 +122,7 @@ class LEDSchedule:
 class LEDConfig:
     driver_type: LEDDriverType = LEDDriverType.AUTO
     num_leds: int = 3
-    brightness: int = 10
+    brightness: float  = 10
     base_color: tuple[int, int, int] = (255, 80, 0)
     schedule: LEDSchedule = field(default_factory=LEDSchedule)
 
